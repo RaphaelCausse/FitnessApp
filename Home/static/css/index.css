@@ -1,0 +1,11 @@
+* {
+    color: red;
+}
+button {
+    background-color: black;
+    border-radius: 5px;
+    border: solid 1px white;
+}
+a {
+    text-decoration: none;
+}

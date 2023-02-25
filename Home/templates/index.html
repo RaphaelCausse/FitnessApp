@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Page Index</title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block main %} 
+    <h2>Index</h2>
+    <button>
+        <a href="user/">Go to page User</a>
+    </button>
+{% endblock %}
