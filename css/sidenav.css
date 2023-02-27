@@ -1,0 +1,12 @@
+i,a{
+    color:#702CF6
+}
+
+aside{
+    height: 100%;
+}
+
+
+.nav-item:hover{
+    background-color: lightgrey;
+}

@@ -5,29 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" >
+    <link href="css/bootstrap.css" rel="stylesheet" >
+    <link href="css/bootstrap-icons.css" rel="stylesheet" >
     <link href="css/header.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <link href="css/sidenav.css" rel="stylesheet">
+    <script src="js/bootstrap.js"></script>
 </head>
 <body>
-  <header class="p-3" id="header-box" >
-    <div class="container" id="header-container">
-      <div class="d-flex  align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" id="logo-container">
-          <img id="logo" class="bi me-2" width="50" src="img/logo3.png" aria-label="Bootstrap" ></img>
+  <header class="" id="header-box" >
+    <div class="container-fluid " id="header-container">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-3 text-white text-decoration-none" id="logo-container">
+          <img id="logo" class="bi me-2" width="80" src="img/logo3.png" aria-label="Bootstrap" ></img>
         </a>
-
-        <ul class="nav d-none d-sm-block col-10  col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <div class="d-none d-sm-block col-sm-auto justify-content-center">
           <div id="title">FIT/FAT</div>
-        </ul>
+        </div>
 
 
-        <div class="text-end" id="log-box">
-          <button type="button" class="btn" id="login-btn">Login</button>
-          <button type="button" class="btn" id="sign-up-btn">Sign-up</button>
+        <div class="text-end align-items-center " id="log-box">
+          <button type="button" class="btn" id="login-btn">Se connecter</button>
         </div>
       </div>
     </div>
   </header>
+  <aside  class="col-md-2 flex-grow-md-1 flex-shrink-1 flex-grow-0 sticky-top pb-md-0 pb-3">
+    <div id="navbar" class="bg-white border p-1 h-100 sticky-top">
+        <ul id="sidenav-box" class="nav nav-pills flex-md-column flex-row mb-auto justify-content-between text-truncate">
+            <li class="nav-item rounded-3">
+                <a href="#" class="nav-link text-truncate">
+                    <i class="bi bi-house-door-fill fs-5"></i>
+                    <span class="d-none d-sm-inline">Home</span>
+                </a>
+            </li>
+            <li class="nav-item rounded-3">
+                <a href="#" class="nav-link  text-truncate">
+                    <i class="bi bi-speedometer fs-5"></i>
+                    <span class="d-none d-sm-inline">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item rounded-3">
+                <a href="#" class="nav-link text-truncate"><i class="bi bi-card-text fs-5"></i>
+                    <span class="d-none d-sm-inline">Orders</span> </a>
+            </li>
+            <li class="nav-item rounded-3">
+                <a href="#" class="nav-link text-truncate "><i class="bi bi-bricks fs-5"></i>
+                    <span class="d-none d-sm-inline">Products</span> </a>
+            </li>
+            <li class="nav-item rounded-3">
+                <a href="#" class="nav-link text-truncate"><i class="bi bi-people fs-5"></i>
+                    <span class="d-none d-sm-inline">Customers</span> </a>
+            </li>
+        </ul>
+    </div>
+  </aside>
 </body>
+  
 </html>
