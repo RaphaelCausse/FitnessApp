@@ -13,29 +13,9 @@
     
 }
 
-#header-box{
-    background-color: rgba(34, 34, 34, 0.623) ;
-    backdrop-filter: blur(30px);
-}
-
-#header-container{
-    height:100%;
-    width: 100%;
-
-}
-
 #title{
-    color: white;
-    font-weight: 900;
+    color:#702CF6;
     font-size:xx-large;
-    
-    padding:4px 0;
-}
-
-
-
-#login-btn{
-    color:white;
     font-weight: 700;
 }
 
