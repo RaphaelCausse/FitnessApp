@@ -18,14 +18,10 @@
     border-bottom: solid black 2px;
 }
 
-
-.Biglogo_social{
+.logo_social{
     max-width: 3%;
 }
 
-.Tinylogo_social{
-    max-width: 3%;
-}
 footer{
     position: absolute;
     height: auto;
