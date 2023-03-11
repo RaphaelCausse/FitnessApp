@@ -1,0 +1,29 @@
+<!-- TODO: Keep it sync with front
+REF:
+    header (when user is not connected)
+FROM:
+    FrontLucas commit 49ffd5f
+-->
+
+{% load static %}
+
+<header class="fixed-top" id="header-box">
+    <div class="container-fluid" id="header-container">
+        <div class=" d-flex align-items-center justify-content-between col-sm-auto col-lg-10 mx-auto ">
+            <div class="d-none d-md-block d-lg-block col-sm-auto justify-content-center">
+                <img src="{% static 'img/logo2.png' %}" width="64">
+            </div>
+            <div class=" col-sm-auto justify-content-center">
+                <div id="title" class="py-lg-3 py-md-3">
+                    FAToFIT
+                </div>
+            </div>
+            <div class="text-end align-items-center" id="log-box">
+                <button type="button" class="btn" id="login-btn">
+                    <!-- TEMPORARY HREF -->
+                    <a href="/home" class="text-white text-decoration-none">SE CONNECTER</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
