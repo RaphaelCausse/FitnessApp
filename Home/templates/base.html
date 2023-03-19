@@ -12,6 +12,7 @@
 
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/footer.css' %}" rel="stylesheet" type="text/css">
     {% block style %}
     {% endblock style %}
 
@@ -24,8 +25,8 @@
     {% block header %}
     {% endblock header %}
 
-    {% block main %}
-    {% endblock main %}
+    {% block content %}
+    {% endblock content %}
 
     {% include 'footer.html' %}
 </body>

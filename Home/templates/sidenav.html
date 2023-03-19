@@ -1,0 +1,43 @@
+<!-- TODO: Keep it sync with front
+REF:
+    User home page
+FROM:
+    FrontLucas commit 49ffd5f
+-->
+
+<aside class="col-sm-3 flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0 pb-3 col-lg-2">
+    <div class="bg-light border rounded-3 p-1 h-100 sticky-top">
+        <ul class="nav nav-pills flex-sm-column flex-row mb-auto justify-content-between text-truncate">
+            <li class="my-1 nav-item">
+                <a href="{% url 'home' %}" class="nav-link px-2 text-truncate">
+                    <i class="bi bi-house fs-5"></i>
+                    <span class="d-none d-sm-inline">Accueil</span>
+                </a>
+            </li>
+            <li class="my-1">
+                <a href="{% url 'profil' %}" class="nav-link px-2 text-truncate">
+                    <i class="bi bi-people fs-5"></i>
+                    <span class="d-none d-sm-inline">Profil</span>
+                </a>
+            </li>
+            <li class="my-1">
+                <a href="{% url 'myday' %}" class="nav-link px-2 text-truncate">
+                    <i class="bi bi-speedometer fs-5"></i>
+                    <span class="d-none d-sm-inline">Ma journee</span>
+                </a>
+            </li>
+            <li class="my-1">
+                <a href="#" class="nav-link px-2 text-truncate">
+                    <i class="bi bi-card-text fs-5"></i>
+                    <span class="d-none d-sm-inline">Entrainement</span>
+                </a>
+            </li>
+            <li class="my-1">
+                <a href="#" class="nav-link px-2 text-truncate">
+                    <i class="bi bi-bricks fs-5"></i>
+                    <span class="d-none d-sm-inline">Parametres</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

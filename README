@@ -13,7 +13,7 @@
 
 ## INSTALLATION
 
-Install the django framework :
+Install all needed python packages :
 ```
 pip install -r requirements.txt
 ```

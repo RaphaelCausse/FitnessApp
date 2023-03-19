@@ -45,12 +45,12 @@ class Food(models.Model):
 
 
 class Result(models.Model):
-    """ User's daily data. """
+    """ User's daily results. """
     
     date = models.DateField(default=timezone.now)
     sleep = models.FloatField()
     weight = models.FloatField()
-    waterIngested = models.FloatField()
+    waterCup = models.FloatField()
     activities = models.ForeignKey(Activity, on_delete=models.CASCADE)
     meals = models.ForeignKey(Food, on_delete=models.CASCADE)
 
@@ -58,14 +58,14 @@ class Result(models.Model):
 class Account(models.Model):
     """ User's account. """
 
+    class Gender(models.TextChoices):
+        MALE = 'M'
+        FEMALE = 'F'
+    
     class GoalType(models.TextChoices):
         MAINTAIN_WEIGHT = 'M', _('Maintain Weight')
         LOSE_WEIGHT = 'L', _('Lose Weight')
         GAIN_WEIGHT = 'G', _('Gain Weight')
-    
-    class Gender(models.TextChoices):
-        MALE = 'M'
-        FEMALE = 'F'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[MinValueValidator(timezone.now().date() - timedelta(days=365*100))])

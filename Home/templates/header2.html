@@ -1,6 +1,6 @@
 <!-- TODO: Keep it sync with front
 REF:
-    header (when user is connected)
+    Header for all other pages
 FROM:
     FrontLucas commit 49ffd5f
 -->
@@ -9,15 +9,17 @@ FROM:
 
 <header class="shadow rounded-3 bg-light" id="header-box" >
     <div class="container-fluid col-11" id="header-container">
-        <div class=" d-flex align-items-center justify-content-between">
-            <a href="/" class=" d-none d-sm-block d-flex align-items-center mb-2 mb-lg-3 text-white text-decoration-none" id="logo-container">
-                <img id="logo" class="bi me-2" width="80" src="{% static 'img/logo3.png' %}" aria-label="Bootstrap">
-            </a>
+        <div class=" d-flex align-items-center justify-content-between col-sm-auto col-lg-10 mx-auto ">
+            <div class="d-none d-sm-block d-flex align-items-center mb-2 mb-lg-3" id="logo-container">
+                <img id="logo" class="bi mx-3" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
+            </div>
             <div class="py-3 col-sm-auto justify-content-center">
                 <div id="title">
                     FAToFIT
                 </div>
             </div>
+            <!-- Affichage de l'icone utilisateur seulement s'il est connecte -->
+            {% if request.user.is_authenticated %}
             <div class="dropdown text-end">
                 <a href="" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <i id="log-logo" class="bi bi-person-circle"></i>
@@ -27,9 +29,13 @@ FROM:
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="#">Deconnexion</a></li>
                 </ul>
+                <a href="{% url 'logout' %}">Deconnexion</a>
             </div>
+            {% else %}
+            <div class="px-5"></div>
+            {% endif %}
         </div>
     </div>
 </header>
