@@ -30,14 +30,10 @@ def login_view(request):
             user = User.objects.get(username=username)
         except:
             print("[ERROR] login : user does not exist")
-            messages.error(
-                request, "L'utilisateur n'existe pas."
-            )
+            messages.error(request, "L'utilisateur n'existe pas.")
         user = authenticate(request, username=username, password=password)
         if user is None:
-            messages.error(
-                request, "Le nom d'utilisateur ou le mot de passe est incorrect."
-            )
+            messages.error(request, "Le nom d'utilisateur ou le mot de passe est incorrect.")
         else:
             login(request, user)
             return redirect('home')
@@ -47,7 +43,6 @@ def login_view(request):
 
 def signup_view(request):
     """ Signup page, create a user. """
-    context = {}
     if request.method == 'GET':
         lifestyles = {
             "Aucune activité": Account.LifeStyle.ACTIVE_NONE,
@@ -71,24 +66,17 @@ def signup_view(request):
             # Verification si l'utilisateur existe deja en base de donnees
             if User.objects.filter(username=form.get('username'), email=form.get('email')).exists():
                 print("[ERROR] signup : user does already exist")
-                messages.error(
-                    request, "L'utilisateur existe déja, création du compte impossible."
-                )
+                messages.error(request, "L'utilisateur existe déja, création du compte impossible.")
             # Creation du nouvel utilisateur en base de donnees
             else:
                 account = create_account_using_form(form)
                 account.save()
                 print("[SUCCESS] signup : user was created")
-                messages.success(
-                    request,
-                    "Votre compte à bien été créé !"
-                )
+                messages.success(request, "Votre compte à bien été créé !")
                 return render(request, 'index.html')
         else:
             print("[ERROR] signup : invalid form fields")
-            messages.error(
-                request, "Des champs sont incorrects ou vides, veuillez saisir des informations valides."
-            )
+            messages.error(request, "Des champs sont incorrects ou vides, veuillez saisir des informations valides.")
             return render(request, 'signup.html', context)
 
     return render(request, 'signup.html', context)
@@ -145,7 +133,7 @@ def community_view(request):
 
 @login_required(login_url='/login/')
 def parameters_view(request):
-    """ Parameters page. """
+    """ User parameters page. """
     context = {}
     if (request.user != User.objects.get(username='admin')):
         current_user = User.objects.get(id=request.user.id)

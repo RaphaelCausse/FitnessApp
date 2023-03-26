@@ -17,8 +17,7 @@ class Activity(models.Model):
         SPINNING = 'SPIN', _('Running')
         LIFT_WEIGHT = 'LWGT', _('Lift Weight')
         CROSS_COUNTRY_SKIING = 'CCSK', _('Cross Country Skiing')
-        HIGH_INTENSITY_INTERVAL_TRAINING = 'HIIT', _(
-            'High-intensity interval training')
+        HIGH_INTENSITY_INTERVAL_TRAINING = 'HIIT', _('High-intensity interval training')
 
     activity = models.CharField(max_length=4, choices=ActivityType.choices)
     duration = models.DurationField()
