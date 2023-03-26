@@ -1,10 +1,12 @@
+body {
+    min-width: 300px;
+}
+
 footer{
     position: absolute;
     height: auto;
     width: 100vw;
-    font-family: "Open Sans";
     padding-top: 30px;
-    text-align: center;
 }
 .footer-content{
     display: flex;
@@ -15,7 +17,7 @@ footer{
 .footer-content h3{
     color: #702CF6;
     font-size: 1.8rem;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: capitalize;
     line-height: 3rem;
 }
@@ -31,23 +33,6 @@ footer{
 
 .socials li{
     display: inline;
-    font-size: 200%;
-}
-
-.footer-bottom{
-    width: 100vw;
-    padding: 20px 0;
-    text-align: center;
-}
-.footer-bottom p{
-    font-size: 14px;
-    word-spacing: 2px;
-    text-transform: capitalize;
-}
-.footer-bottom span{
-    text-transform: uppercase;
-    opacity: .4;
-    font-weight: 200;
 }
 
 .colorScial{

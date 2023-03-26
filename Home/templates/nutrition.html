@@ -1,0 +1,29 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>FAToFIT - Nutrition</title>
+{% endblock title %}
+
+{% block style %}
+<link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+{% endblock style %}
+
+{% block script %}
+{% endblock script %}
+
+{% block main %}
+<!-- Box, a encapsuler pour tous les items -->
+<div class="card shadow border-start-primary py-2">
+    <div class="card-body">
+        <h1>Nutrition</h1>
+    </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+        <span>TODO: contenu</span>
+    </div>
+</div>
+{% endblock main %}

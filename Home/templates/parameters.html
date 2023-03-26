@@ -1,0 +1,41 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>FAToFIT - Parametres</title>
+{% endblock title %}
+
+{% block style %}
+<link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+{% endblock style %}
+
+{% block script %}
+{% endblock script %}
+
+{% block main %}
+<!-- Box, a encapsuler pour tous les items -->
+<div class="card shadow border-start-primary py-2">
+    <div class="card-body">
+        <h1>Parametres</h1>
+        <span>TODO: Pouvoir éditer son profil avec un formulaire.</span>
+    </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+        <p>Request.user : {{ request.user }}</p>
+        <p>Nom d'utilisateur : {{ account.user }}</p>
+        <p>Prénom : {{ account.user.first_name }}</p>
+        <p>Nom : {{ account.user.last_name }}</p>
+        <p>Email : {{ account.user.email }}</p>
+        <p>Date de naissance : {{ account.birthdate }}</p>
+        <p>Genre : {{ account.gender }}</p>
+        <p>Poids : {{ account.weight }}</p>
+        <p>Taille : {{ account.height }}</p>
+        <p>Niveau d'activité : {{ account.lifestyle }}</p>
+        <p>Objectif : {{ account.goalType }}</p>
+        <p>Objectif de poids : {{ account.goalWeight }}</p>
+    </div>
+</div>
+{% endblock main %}

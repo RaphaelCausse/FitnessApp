@@ -1,37 +1,31 @@
-<!-- TODO: Keep it sync with front
-REF:
-    Header for all other pages
-FROM:
-    FrontLucas commit 49ffd5f
--->
-
 {% load static %}
 
-<header class="shadow rounded-3 bg-light" id="header-box" >
+<header class="shadow border-bottom bg-white" id="header-box" >
     <div class="container-fluid col-11" id="header-container">
         <div class=" d-flex align-items-center justify-content-between col-sm-auto col-lg-10 mx-auto ">
-            <div class="d-none d-sm-block d-flex align-items-center mb-2 mb-lg-3" id="logo-container">
-                <img id="logo" class="bi mx-3" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
+            <!-- Redirection en focntion de la page actuelle, lors du click sur le logo -->
+            {% if request.get_full_path == '/login/' or request.get_full_path == '/signup/' %}
+            <a href="{% url 'index' %}" class=" d-none d-sm-block d-flex align-items-center mt-1 mb-2" id="logo-container">
+                <img id="logo" class="bi mx-2" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
+            </a>
+            {% elif request.user.is_authenticated %}
+            <a href="{% url 'home' %}" class=" d-none d-sm-block d-flex align-items-center mt-1 mb-2" id="logo-container">
+                <img id="logo" class="bi mx-2" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
+            </a>
+            {% else %}
+            <div class="d-none d-sm-block d-flex align-items-center mt-1 mb-2" id="logo-container">
+                <img id="logo" class="bi mx-2" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
             </div>
+            {% endif %}
             <div class="py-3 col-sm-auto justify-content-center">
                 <div id="title">
                     FAToFIT
                 </div>
             </div>
             <!-- Affichage de l'icone utilisateur seulement s'il est connecte -->
-            {% if request.user.is_authenticated %}
-            <div class="dropdown text-end">
-                <a href="" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i id="log-logo" class="bi bi-person-circle"></i>
-                </a>
-                <ul class="dropdown-menu text-small">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Deconnexion</a></li>
-                </ul>
-                <a href="{% url 'logout' %}">Deconnexion</a>
+            {% if request.user.is_authenticated and request.get_full_path != '/login/' %}
+            <div id="logout">
+                <a href="{% url 'logout' %}" class="text-decoration-none fw-bold" style="color: #702CF6">Déconnexion</a>
             </div>
             {% else %}
             <div class="px-5"></div>

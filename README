@@ -1,6 +1,5 @@
 # FITNESS APPLICATION
 
-
 # Table of Contents
 
 - [Requirements](#requirements)
@@ -9,20 +8,26 @@
 
 ## REQUIREMENTS
 
-* Python (version >= 3.10.9)
+- Python (version >= 3.8)
+
+https://www.python.org/downloads/
 
 ## INSTALLATION
 
-Install all needed python packages :
+Open a termial and move to the project folder, where is located the file `requirements.txt`.
+
+Install all needed python packages by running this command :
+
 ```
 pip install -r requirements.txt
 ```
 
 ## EXECUTION
 
-Open a termial, move to root of the project folder, where is located the file `manage.py`.
+Open a termial, move to the project folder, where is located the file `manage.py`.
 
 Launch the server (default port is 8000) :
+
 ```
 python manage.py runserver
 ```

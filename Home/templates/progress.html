@@ -1,0 +1,58 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>FAToFIT - Profil</title>
+{% endblock title %}
+
+{% block style %}
+<link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/progress.css' %}" rel="stylesheet" type="text/css" />
+{% endblock style %}
+
+{% block script %}
+{% endblock script %}
+
+{% block main %}
+<!-- Box, a encapsuler pour tous les items -->
+<div class="card shadow border-start-primary py-2">
+    <div class="card-body">
+
+        <h2>Votre Progression</h2>
+        <div class="d-flex justify-content-center">
+            <i id="log-logo1" class="bi bi-person-circle"></i>
+        </div>
+        <div class="d-flex justify-content-center"><h3>Nom Prénom</h3></div>
+        <hr />
+        <h4>Mensuration :</h4>
+        <div class="container text-center">
+            <div class="col-xs-3 center-block colordiv" style="background-color: rgba(0, 0, 0, 0)">
+                <div class="row">
+                    <div class="col">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Taille</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Poids</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="button button1 w-25">Sauvegarder</button>
+            </div>
+        </div>
+        <hr />
+        <h4>Votre progression :</h4>
+        <div id="ProgressionGraph" class="ProgressionGraph"></div>
+
+    </div>
+</div>
+{% endblock main %}

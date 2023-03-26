@@ -86,6 +86,11 @@ DATABASES = {
     }
 }
 
+# SESSIONS
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -124,7 +129,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIR = [
-   BASE_DIR / "Home/static",
+    BASE_DIR / "Home/static",
 ]
 
 # Default primary key field type
