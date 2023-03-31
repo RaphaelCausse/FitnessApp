@@ -51,6 +51,24 @@ form.confirm_password.addEventListener('change', function () {
     validate_password() 
 })
 
+form.weight.addEventListener('input', function () {
+    validate_weight()
+})
+
+form.height.addEventListener('input', function () {
+    validate_height()
+})
+
+for (const input of form.goal) {
+    input.addEventListener('click', function () {
+        maintain_weight()
+    })
+}
+
+form.goal_weight.addEventListener('input', function () {
+    validate_goalweight()
+})
+
 // Validation functions
 
 function validate_firstname() {
@@ -91,10 +109,12 @@ function validate_lastname() {
 
 function validate_birthdate() {
     let birthdate = document.getElementById("birthdate");
-    let date = new Date(birthdate.value);
+    let bdate = new Date(birthdate.value);
     let now = new Date();
+    let currentYear = now.getFullYear();
+    let birthYear = bdate.getFullYear()
     
-    if (birthdate.value == "" || date == "Invalid Date" || date > now) {
+    if (birthdate.value == "" || bdate == "Invalid Date" || bdate > now ||  currentYear-birthYear < 10) {
         if (birthdate.classList.contains("is-valid"))
             birthdate.classList.replace("is-valid", "is-invalid")
         else
@@ -171,6 +191,99 @@ function validate_password() {
     return true;
 }
 
-function validate_bodydata() {
-    // TODO
+function validate_weight() {
+    let weight = document.getElementById("weight")
+
+    if (weight.value == "" || weight.value <= 20) {
+        if (weight.classList.contains("is-valid"))
+            weight.classList.replace("is-valid", "is-invalid")
+        else
+            weight.classList.add("is-invalid")
+        return false
+    }
+    if (weight.classList.contains("is-invalid"))
+        weight.classList.replace("is-invalid", "is-valid")
+    else
+        weight.classList.add("is-valid")
+    return true
+}
+
+function validate_height() {
+    let height = document.getElementById("height")
+    
+    if (height.value == "" || height.value <= 20) {
+        if (height.classList.contains("is-valid"))
+            height.classList.replace("is-valid", "is-invalid")
+        else
+            height.classList.add("is-invalid")
+        return false
+    }
+    if (height.classList.contains("is-invalid"))
+        height.classList.replace("is-invalid", "is-valid")
+    else
+        height.classList.add("is-valid")
+    return true
+}
+
+function maintain_weight() {
+    let weight = document.getElementById("weight")
+    let goaltype = document.querySelector("input[name = goal]:checked")
+    let goalweight = document.getElementById("goal_weight")
+
+    if (goaltype.value == "M") {
+        weight.addEventListener('change', function () {
+            let goalweight = document.getElementById("goal_weight")
+            goalweight.setAttribute('value', weight.value)
+        })
+        goalweight.setAttribute('value', weight.value)
+        goalweight.parentNode.hidden = true
+        goalweight.hidden = true
+    }
+    else {
+        goalweight.setAttribute('value', "")
+        goalweight.parentNode.hidden = false
+        goalweight.hidden = false
+    }
+}
+
+function validate_goalweight() {
+    let weight = document.getElementById("weight")
+    let goaltype = document.querySelector("input[name = goal]:checked")
+    let goalweight = document.getElementById("goal_weight")
+
+    switch (goaltype.value) {
+        case "L":
+            console.log("L");
+            if (goalweight.value > weight.value) {
+                if (goalweight.classList.contains("is-valid")) {
+                    goalweight.classList.replace("is-valid", "is-invalid")
+                } else {
+                    goalweight.classList.add("is-invalid")
+                }
+            } else {
+                if (goalweight.classList.contains("is-invalid")) {
+                    goalweight.classList.replace("is-invalid", "is-valid")
+                } else {
+                    goalweight.classList.add("is-valid")
+                }
+            }
+            break
+        case "G":
+            console.log("G");
+            if (goalweight.value < weight.value) {
+                if (goalweight.classList.contains("is-valid")) {
+                    goalweight.classList.replace("is-valid", "is-invalid")
+                } else {
+                    goalweight.classList.add("is-invalid")
+                }
+            } else {
+                if (goalweight.classList.contains("is-invalid")) {
+                    goalweight.classList.replace("is-invalid", "is-valid")
+                } else {
+                    goalweight.classList.add("is-valid")
+                }
+            }
+            break
+        default: break
+    }
 }

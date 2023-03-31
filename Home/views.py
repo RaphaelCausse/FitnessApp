@@ -43,22 +43,25 @@ def login_view(request):
 
 def signup_view(request):
     """ Signup page, create a user. """
-    if request.method == 'GET':
-        lifestyles = {
-            "Aucune activité": Account.LifeStyle.ACTIVE_NONE,
-            "Peu actif": Account.LifeStyle.ACTIVE_LOW,
-            "Moyennement actif": Account.LifeStyle.ACTIVE_MED,
-            "Très actif": Account.LifeStyle.ACTIVE_INT,
-            "Professionnel": Account.LifeStyle.ACTIVE_PRO,
-        }
-        goals = {
-            "Prendre du muscle": Account.GoalType.GAIN_WEIGHT,
-            "Se maintenir en forme": Account.GoalType.MAINTAIN_WEIGHT,
-            "Perdre du poids": Account.GoalType.LOSE_WEIGHT,
-        }
-        context = {"lifestyles": lifestyles, "goals": goals}
+    gender = {
+        "Homme": Account.Gender.MALE,
+        "Femme": Account.Gender.FEMALE,
+    }
+    lifestyles = {
+        "Aucune activité": Account.LifeStyle.ACTIVE_NONE,
+        "Peu actif": Account.LifeStyle.ACTIVE_LOW,
+        "Moyennement actif": Account.LifeStyle.ACTIVE_MED,
+        "Très actif": Account.LifeStyle.ACTIVE_INT,
+        "Professionnel": Account.LifeStyle.ACTIVE_PRO,
+    }
+    goals = {
+        "Prendre du muscle": Account.GoalType.GAIN_WEIGHT,
+        "Maintenir son poids": Account.GoalType.MAINTAIN_WEIGHT,
+        "Perdre du poids": Account.GoalType.LOSE_WEIGHT,
+    }
+    context = {"gender": gender, "lifestyles": lifestyles, "goals": goals}
 
-    elif request.method == 'POST':
+    if request.method == 'POST':
         # Recuperation des champs du formulaire
         form = get_signup_form_fields(request)
         check = check_form_fields(form)

@@ -45,7 +45,7 @@ class Food(models.Model):
 class Result(models.Model):
     """ User's daily results. """
     date = models.DateField(default=timezone.now)
-    sleep = models.FloatField()
+    sleep = models.TimeField()
     weight = models.FloatField()
     waterCup = models.FloatField()
     activities = models.ForeignKey(Activity, default=None, on_delete=models.SET_NULL, blank=True, null=True)
@@ -79,4 +79,5 @@ class Account(models.Model):
     lifestyle = models.CharField(max_length=4, choices=LifeStyle.choices)
     goalType = models.CharField(max_length=1, choices=GoalType.choices)
     goalWeight = models.FloatField(validators=[MinValueValidator(20.0)])
+    goalCalories = models.FloatField()
     results = models.ForeignKey(Result, default=None, on_delete=models.SET_NULL, blank=True, null=True)

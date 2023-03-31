@@ -69,6 +69,28 @@ def create_account_using_form(form):
         lifestyle=form.get('lifestyle'),
         goalType=form.get('goal'),
         goalWeight=form.get('goal_weight'),
+        goalCalories=compute_goal_calories(form),
         results=None,
     )
     return account
+
+
+def compute_goal_calories(form):
+    """ Compute goal calories value according to profile. """
+    gender=form.get('gender')
+    weight=form.get('weight')
+    height=form.get('height')
+    lifestyle=form.get('lifestyle')
+    birthdate = form.get('birthdate').split("-")
+    birthdate = date(int(birthdate[0]), int(birthdate[1]), int(birthdate[2]))
+    today = date.today()
+    age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+    # Compute base metabolism value and goal calories value
+    baseMetabolism = (10*float(weight)) + (6.25*float(height)) - (5*float(age))
+    if gender == "M":
+        baseMetabolism += 5.0
+    elif gender == "F":
+        baseMetabolism -= 161.0
+    activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMID': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
+    goalCalories = baseMetabolism * activity.get(lifestyle) 
+    return goalCalories
