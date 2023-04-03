@@ -12,6 +12,8 @@ urlpatterns = [
     path('nutrition/', views.nutrition_view, name='nutrition'),
     path('activity/', views.activity_view, name='activity'),
     path('training/', views.training_view, name='training'),
-    path('community/', views.community_view, name='community'),
+    path('social/', views.social_view, name='social'),
+    path('social/add/', views.social_add_view, name='social_add'),
+    path('social/delete/<str:id>', views.social_delete_view, name='social_delete'),
     path('parameters/', views.parameters_view, name='parameters'),
 ]

@@ -7,14 +7,15 @@ from django.contrib.auth import (
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Account
+from .models import (
+    Result, Account, SocialPost,
+)
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
 )
 
 
 # Create your views here.
-
 
 def error_view(request):
     """ Error page. """
@@ -29,8 +30,8 @@ def login_view(request):
         try:
             user = User.objects.get(username=username)
         except:
-            print("[ERROR] login : user does not exist")
-            messages.error(request, "L'utilisateur n'existe pas.")
+            print(f"[ERROR] login : user '{username}' does not exist")
+            messages.error(request, "L'utilisateur n'existe pas. Réessayez.")
         user = authenticate(request, username=username, password=password)
         if user is None:
             messages.error(request, "Le nom d'utilisateur ou le mot de passe est incorrect.")
@@ -68,19 +69,18 @@ def signup_view(request):
         if check:
             # Verification si l'utilisateur existe deja en base de donnees
             if User.objects.filter(username=form.get('username'), email=form.get('email')).exists():
-                print("[ERROR] signup : user does already exist")
+                print(f"[ERROR] signup : user '{form.get('username')}' does already exist")
                 messages.error(request, "L'utilisateur existe déja, création du compte impossible.")
             # Creation du nouvel utilisateur en base de donnees
             else:
                 account = create_account_using_form(form)
                 account.save()
-                print("[SUCCESS] signup : user was created")
+                print(f"[SUCCESS] signup : user '{form.get('username')}' was created")
                 messages.success(request, "Votre compte à bien été créé !")
                 return render(request, 'index.html')
         else:
             print("[ERROR] signup : invalid form fields")
             messages.error(request, "Des champs sont incorrects ou vides, veuillez saisir des informations valides.")
-            return render(request, 'signup.html', context)
 
     return render(request, 'signup.html', context)
 
@@ -129,9 +129,27 @@ def training_view(request):
 
 
 @login_required(login_url='/login/')
-def community_view(request):
-    """ Community page. """
-    return render(request, 'community.html')
+def social_view(request):
+    """ Social page with social posts. """
+    current_user = User.objects.get(id=request.user.id)
+    account = Account.objects.get(user=current_user)
+    posts = SocialPost.objects.all()
+    context = {"account": account, "posts": posts}
+    return render(request, 'social.html', context)
+
+
+@login_required(login_url='/login/')
+def social_add_view(request):
+    """ Add a social post. """
+    # TODO
+    return render(request, 'social_add.html')
+
+
+@login_required(login_url='/login/')
+def social_delete_view(request, id):
+    """ Delete a specific social post. """
+    # TODO
+    return render(request, 'social_delete.html')
 
 
 @login_required(login_url='/login/')
@@ -141,5 +159,6 @@ def parameters_view(request):
     if (request.user != User.objects.get(username='admin')):
         current_user = User.objects.get(id=request.user.id)
         account = Account.objects.get(user=current_user)
-        context = {"account": account}
+        age = account.get_age()
+        context = {"account": account, "age": age}
     return render(request, 'parameters.html', context)

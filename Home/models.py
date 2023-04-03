@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
-from datetime import timedelta
+from datetime import timedelta, date
 
 
 class Activity(models.Model):
@@ -26,6 +26,10 @@ class Activity(models.Model):
         for i, choice in enumerate(ActivityType.choices)
     }
 
+    def __str__(self) -> str:
+        """ Used for admin panel visibility. """
+        return self.activity
+
     def get_calories(self):
         """ Associate an average range of calories during an hour for a given activity. """
         return self.calories_burned_per_hour[self.activity] * (self.duration.total_seconds() / 3600)
@@ -41,15 +45,24 @@ class Food(models.Model):
     calories = models.FloatField()
     label = models.CharField(max_length=4, choices=FoodLabel.choices)
 
+    def __str__(self):
+        """ Used for admin panel visibility. """
+        return f"{self.label}, {self.name}"
+
 
 class Result(models.Model):
     """ User's daily results. """
-    date = models.DateField(default=timezone.now)
-    sleep = models.TimeField()
-    weight = models.FloatField()
-    waterCup = models.FloatField()
-    activities = models.ForeignKey(Activity, default=None, on_delete=models.SET_NULL, blank=True, null=True)
-    meals = models.ForeignKey(Food, default=None, on_delete=models.SET_NULL, blank=True, null=True)
+    date = models.DateField(auto_now_add=True)
+    sleep = models.TimeField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    waterCups = models.FloatField(default=0)
+    steps = models.PositiveSmallIntegerField(default=0)
+    activities = models.ForeignKey(Activity, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
+    meals = models.ForeignKey(Food, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
+
+    def __str__(self):
+        """ Used for admin panel visibility. """
+        return f"{self.date} of {Account.objects.get(result=self).user.username}"
 
 
 class Account(models.Model):
@@ -66,9 +79,9 @@ class Account(models.Model):
         ACTIVE_PRO = 'APRO', _('Professional activity')
 
     class GoalType(models.TextChoices):
+        GAIN_WEIGHT = 'G', _('Gain Weight')
         MAINTAIN_WEIGHT = 'M', _('Maintain Weight')
         LOSE_WEIGHT = 'L', _('Lose Weight')
-        GAIN_WEIGHT = 'G', _('Gain Weight')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[MinValueValidator(
@@ -79,5 +92,43 @@ class Account(models.Model):
     lifestyle = models.CharField(max_length=4, choices=LifeStyle.choices)
     goalType = models.CharField(max_length=1, choices=GoalType.choices)
     goalWeight = models.FloatField(validators=[MinValueValidator(20.0)])
-    goalCalories = models.FloatField()
-    results = models.ForeignKey(Result, default=None, on_delete=models.SET_NULL, blank=True, null=True)
+    goalCalories = models.PositiveSmallIntegerField(blank=True, null=True)
+    results = models.ForeignKey(Result, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
+
+    def __str__(self):
+        """ Used for admin panel visibility. """
+        return self.user.username
+
+    def get_age(self):
+        """ Age of account user. """
+        today = date.today()
+        age = today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
+        return age
+    
+    def set_goal_calories(self):
+        """ Compute and set goal calories value for account profile. """
+        age = self.get_age()
+        baseMetabolism = (10*float(self.weight)) + (6.25*float(self.height)) - (5*float(age))
+        if self.gender == "M":
+            baseMetabolism += 5.0
+        elif self.gender == "F":
+            baseMetabolism -= 161.0
+        activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMID': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
+        goalCalories = round(baseMetabolism * activity.get(self.lifestyle)) 
+        self.goalCalories = goalCalories
+    
+
+class SocialPost(models.Model):
+    """ Social posts. """
+    class Meta:
+        ordering = ['-created']
+
+    author = models.ForeignKey(Account, on_delete=models.CASCADE)
+    text = models.TextField(blank=True, null=True)
+    upVotes = models.PositiveSmallIntegerField(default=0)
+    downVotes = models.PositiveSmallIntegerField(default=0)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        """ Used for admin panel visibility. """
+        return f"{self.created} from {self.author.user.username}"
