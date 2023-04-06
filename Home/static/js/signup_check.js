@@ -254,7 +254,7 @@ function validate_goalweight() {
     switch (goaltype.value) {
         case "L":
             console.log("L");
-            if (goalweight.value > weight.value) {
+            if (goalweight.value >= weight.value) {
                 if (goalweight.classList.contains("is-valid")) {
                     goalweight.classList.replace("is-valid", "is-invalid")
                 } else {
@@ -270,7 +270,7 @@ function validate_goalweight() {
             break
         case "G":
             console.log("G");
-            if (goalweight.value < weight.value) {
+            if (goalweight.value <= weight.value) {
                 if (goalweight.classList.contains("is-valid")) {
                     goalweight.classList.replace("is-valid", "is-invalid")
                 } else {

@@ -113,10 +113,9 @@ class Account(models.Model):
             baseMetabolism += 5.0
         elif self.gender == "F":
             baseMetabolism -= 161.0
-        activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMID': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
-        goalCalories = round(baseMetabolism * activity.get(self.lifestyle)) 
-        self.goalCalories = goalCalories
-    
+        activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMED': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
+        self.goalCalories = round(baseMetabolism * activity.get(self.lifestyle, 1.2)) 
+
 
 class SocialPost(models.Model):
     """ Social posts. """
