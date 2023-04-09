@@ -14,16 +14,15 @@
 {% endblock script %}
 
 {% block main %}
-<!-- Box, a encapsuler pour tous les items -->
 <div class="card shadow border-start-primary py-2">
-    <div class="card-body">
+    <div class="card-body px-3">
         <h1>Parametres</h1>
         <span>TODO: Pouvoir éditer son profil avec un formulaire.</span>
     </div>
 </div>
 
 <div class="card shadow border-start-primary py-2 mt-3">
-    <div class="card-body">
+    <div class="card-body px-3">
         <p>Request.user : {{ request.user }}</p>
         <p>Nom d'utilisateur : {{ account.user }}</p>
         <p>Prénom : {{ account.user.first_name }}</p>

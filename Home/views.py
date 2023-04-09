@@ -131,9 +131,9 @@ def training_view(request):
 @login_required(login_url='/login/')
 def social_view(request):
     """ Social page with social posts. """
+    posts = SocialPost.objects.all()
     current_user = User.objects.get(id=request.user.id)
     account = Account.objects.get(user=current_user)
-    posts = SocialPost.objects.all()
     context = {"account": account, "posts": posts}
     return render(request, 'social.html', context)
 
@@ -141,15 +141,30 @@ def social_view(request):
 @login_required(login_url='/login/')
 def social_add_view(request):
     """ Add a social post. """
-    # TODO
-    return render(request, 'social_add.html')
+    if request.method == "POST":
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        newPost = SocialPost.objects.create(
+            author=account,
+            text=request.POST.get('message'),
+            likes=0,
+            dislikes=0,
+        )
+        newPost.save()
+    return redirect('/social')
 
 
 @login_required(login_url='/login/')
 def social_delete_view(request, id):
     """ Delete a specific social post. """
-    # TODO
-    return render(request, 'social_delete.html')
+    post = SocialPost.objects.get(id=id)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect('/social')
+
+    context = {"post": post}
+    return render(request, 'social_delete.html', context)
 
 
 @login_required(login_url='/login/')

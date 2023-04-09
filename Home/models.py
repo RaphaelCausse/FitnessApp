@@ -124,8 +124,8 @@ class SocialPost(models.Model):
 
     author = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.TextField(blank=True, null=True)
-    upVotes = models.PositiveSmallIntegerField(default=0)
-    downVotes = models.PositiveSmallIntegerField(default=0)
+    likes = models.PositiveSmallIntegerField(default=0)
+    dislikes = models.PositiveSmallIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

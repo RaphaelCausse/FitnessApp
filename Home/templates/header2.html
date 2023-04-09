@@ -4,7 +4,7 @@
     <div class="container-fluid col-11" id="header-container">
         <div class=" d-flex align-items-center justify-content-between col-sm-auto col-lg-10 mx-auto ">
             <!-- Redirection en focntion de la page actuelle, lors du click sur le logo -->
-            {% if request.get_full_path == '/login/' or request.get_full_path == '/signup/' %}
+            {% if "/login/" in request.get_full_path or "/signup/" in request.get_full_path %}
             <a href="{% url 'index' %}" class=" d-none d-sm-block d-flex align-items-center mt-1 mb-2" id="logo-container">
                 <img id="logo" class="bi mx-2" width="80" src="{% static 'img/logo3.png' %}" alt="logo">
             </a>
