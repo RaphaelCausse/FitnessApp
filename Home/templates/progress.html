@@ -13,9 +13,15 @@
 
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="../static/js/training_function.js"></script>
 {% endblock script %}
 
 {% block main %}
+<div class="card shadow border-start-primary py-2">
+    <div class="card-body">
+        <h1>Votre progression :</h1>
+    </div>
+</div>
 <!-- Box, a encapsuler pour tous les items -->
 <div class="card shadow border-start-primary py-2 mt-3">
     <div class="card-body">
@@ -26,9 +32,16 @@
                     <div class="col">
                             <input type="number" placeholder="Taille" id="height" name="height" class="form-control" step="1" min="0" max="250" required>
                     </div>
+                    <div class="invalid-feedback">
+                        Veuillez saisir un poids valide (+ 20 kg).
+                    </div>
                     <div class="col">
                             <input type="number" placeholder="Poids" id="weight" name="weight" class="form-control" step="1" min="0" max="250">
                     </div>
+                    <div class="invalid-feedback">
+                        Veuillez saisir une taille valide (+ 20 cm).
+                    </div>
+                    
                 </div>
                 <button class="button button1 w-25">Sauvegarder</button>
             </div>
