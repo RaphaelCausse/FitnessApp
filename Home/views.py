@@ -111,6 +111,17 @@ def progress_view(request):
 
 
 @login_required(login_url='/login/')
+def progress_add_view(request):
+    """ User progress page. """
+    context = {}
+    if request.method == "POST":
+        newWeight = int(request.POST.get("weight"))
+        # TODO save in DB new weight => refactor weight storage in DB
+
+    return render(request, 'progress.html', context)
+
+
+@login_required(login_url='/login/')
 def nutrition_view(request):
     """ User daily nutrition entries page. """
     return render(request, 'nutrition.html')
