@@ -4,11 +4,13 @@ from django.shortcuts import (
 from django.contrib.auth import (
     authenticate, login, logout,
 )
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import (
-    Result, Account, SocialPost,
+    Result, Account, SocialPost, LikedPost, DislikedPost,
 )
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
@@ -16,11 +18,6 @@ from Home.functions import (
 
 
 # Create your views here.
-
-def error_view(request):
-    """ Error page. """
-    return render(request, 'error_page.html')
-
 
 def login_view(request):
     """ Login page, check for user login. """
@@ -134,7 +131,10 @@ def social_view(request):
     posts = SocialPost.objects.all()
     current_user = User.objects.get(id=request.user.id)
     account = Account.objects.get(user=current_user)
-    context = {"account": account, "posts": posts}
+    liked_posts = [lp.post_id.id for lp in LikedPost.objects.filter(liker_id=account.id)]
+    disliked_posts = [dp.post_id.id for dp in DislikedPost.objects.filter(disliker_id=account.id)]
+    print(liked_posts, disliked_posts)
+    context = {"account": account, "posts": posts, "liked": liked_posts, "disliked": disliked_posts}
     return render(request, 'social.html', context)
 
 
@@ -152,6 +152,58 @@ def social_add_view(request):
         )
         newPost.save()
     return redirect('/social')
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def social_update_ajax_view(request):
+    response = {}
+    if request.method == "POST":
+        # Recuperation de la requete ajax
+        ajax_request = {key: int(value) for (key, value) in request.POST.items()}
+        # Recuperer en BDD les objets concernes
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        postId = ajax_request.get("post_id")
+        post = SocialPost.objects.get(id=postId)
+
+        # Faire les modifications sur la base de donnees
+        likes = ajax_request.get("likes")
+        dislikes = ajax_request.get("dislikes")
+        
+        # Si le post a ete like, ajout a la table LikedPost
+        if likes > post.likes:
+            post.likes += 1
+            to_add = LikedPost.objects.create(
+                liker_id=account,
+                post_id=post
+            )
+            to_add.save()
+            post.save()
+        # Si le post n'est plus like, supression de la table LikedPost
+        if likes < post.likes:
+            post.likes -= 1
+            to_rem = LikedPost.objects.get(liker_id=account.id, post_id=post.id)
+            to_rem.delete()
+            post.save()
+        
+        # Si le post a ete dislike, ajout a la table DislikedPost
+        if dislikes > post.dislikes:
+            post.dislikes += 1
+            to_add = DislikedPost.objects.create(
+                disliker_id=account,
+                post_id=post
+            )
+            to_add.save()
+            post.save()
+        # Si le post n'est plus dislike, suppression de la table DislikedPost
+        if dislikes < post.dislikes:
+            post.dislikes -= 1
+            to_rem = DislikedPost.objects.get(disliker_id=account.id, post_id=post.id)
+            to_rem.delete()
+            post.save()
+        
+    return JsonResponse(response)
 
 
 @login_required(login_url='/login/')

@@ -131,3 +131,15 @@ class SocialPost(models.Model):
     def __str__(self) -> str:
         """ Used for admin panel visibility. """
         return f"{self.created} from {self.author.user.username}"
+    
+
+class LikedPost(models.Model):
+    """ Posts liked. """
+    liker_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(SocialPost, on_delete=models.CASCADE)
+
+
+class DislikedPost(models.Model):
+    """ Posts disliked. """
+    disliker_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(SocialPost, on_delete=models.CASCADE)

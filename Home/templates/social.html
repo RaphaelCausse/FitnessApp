@@ -27,17 +27,28 @@
 </div>
 
 <!-- Ajout de posts sociaux -->
+<div id="account-id" hidden>{{ account.id }}</div>
+<div id="liked-posts" hidden> 
+    {% for lp in liked %}
+    <div>{{ lp }}</div>
+    {% endfor %}
+</div>
+<div id="disliked-posts" hidden>
+    {% for dp in disliked %}
+    <div>{{ dp }}</div>
+    {% endfor %}
+</div>
 <div class="card shadow border-start-primary mt-3">
     <div class="card-body px-3">
-        <button type="button" id="btn-add-post" class="d-block btn btn-primary btn-block fa-lg p-2 shadow border" style="background-color: #702CF6;">
+        <button type="button" id="btn-add-post" class="d-block btn btn-primary btn-block fa-lg p-2 shadow border mx-auto" style="background-color: #702CF6;">
             <i class="bi bi-plus-square me-2"></i>Ajoutez un post
         </button>
         <div id="form-add-post" class="d-none pt-2">
             <form method="POST" action="{% url 'social_add' %}" class="needs-validation">
                 {% csrf_token %}
                 <div class="d-flex flex-column pt-2">
-                    <label for="message">Ajoutez un post</label>
-                    <input type="text" name="message" id="message" class="form-control" placeholder="Contenu du post" minlength="1" maxlength="400" required>
+                    <label for="message" class="p-2 fw-bold">Ajoutez un post</label>
+                    <textarea name="message" id="message" rows="4" class="form-control resize-none" style="resize: none;" placeholder="Contenu du post" minlength="1" maxlength="400" required></textarea>
                     <div class="invalid-feedback">
                         Veullez saisir votre message (1-400 caractères).
                     </div>
@@ -74,21 +85,23 @@
         <div class="px-2 py-2">
             <span class="text-break">{{ post.text }}</span>
         </div>
-        <!-- TODO : Cliquer sur upvote ou downvote pour faire augmenter le compteur => mise en evidence de l'item clique;
-            si item clique, transferer la mise en evidence et mettre a jour les 2 compteurs ( + et - )
-            (ref likes et dislikes Youtube, Twitter...)
-            Ajax ??
-            icons likes <i class="bi bi-hand-thumbs-up"></i>   <i class="bi bi-hand-thumbs-up-fill"></i>
-            icons dislikes <i class="bi bi-hand-thumbs-down"></i>   <i class="bi bi-hand-thumbs-down-fill"></i>
-        -->
-        <div class="d-flex flex-row">
-            <div class="text-success px-2">
-                <i class="bi bi-hand-thumbs-up"></i>
-                <span class="text-success">{{ post.likes }}</span>
+        <div class="d-flex flex-row posts-data">
+            <div class="post-id" hidden>{{ post.id }}</div>
+            <div class="text-success px-2 user-select-none" id="div-likes">
+                {% if post.id in liked %}
+                <i class="bi bi-hand-thumbs-up-fill" id="likes"></i>
+                {% else %}
+                <i class="bi bi-hand-thumbs-up" id="likes"></i>
+                {% endif %}
+                <span class="text-success" id="likes-count">{{ post.likes }}</span>
             </div>
-            <div class="text-danger px-2">
-                <i class="bi bi-hand-thumbs-down"></i>
-                <span class="text-danger">{{ post.dislikes }}</span>
+            <div class="text-danger px-2 user-select-none" id="div-dislikes">
+                {% if post.id in disliked %}
+                <i class="bi bi-hand-thumbs-down-fill" id="dislikes"></i>
+                {% else %}
+                <i class="bi bi-hand-thumbs-down" id="dislikes"></i>
+                {% endif %}
+                <span class="text-danger" id="dislikes-count">{{ post.dislikes }}</span>
             </div>
         </div>
         <hr>
