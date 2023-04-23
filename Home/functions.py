@@ -69,7 +69,6 @@ def create_account_using_form(form):
         lifestyle=form.get('lifestyle'),
         goalType=form.get('goal'),
         goalWeight=form.get('goal_weight'),
-        results=None,
     )
     account.set_goal_calories()
     return account

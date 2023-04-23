@@ -1,26 +1,4 @@
 // Boutons likes et Dislikes des posts
-
-let account_id = document.getElementById("account-id").textContent
-// ID des Posts qui sont likes par account connecte
-let account_liked_posts = []
-for (i = 1; i < document.getElementById("liked-posts").childNodes.length; i+=2)
-    account_liked_posts.push(document.getElementById("liked-posts").childNodes[i].textContent)
-// ID des Posts qui sont dislikes par account connecte
-let account_disliked_posts = []
-for (i = 1; i < document.getElementById("disliked-posts").childNodes.length; i+=2)
-    account_disliked_posts.push(document.getElementById("disliked-posts").childNodes[i].textContent)
-
-// Recuperer les informations de chaques posts
-let div_data_posts = document.querySelectorAll(".posts-data")
-let posts_data = []
-div_data_posts.forEach((post) => {
-    posts_data.push({ "post_id": post.childNodes[1].textContent,
-    "liked": account_liked_posts.includes(post.childNodes[1].textContent) ? 1 : 0, 
-    "disliked": account_disliked_posts.includes(post.childNodes[1].textContent) ? 1 : 0,
-    })
-})
-
-// Click sur les div de likes
 let div_likes = document.querySelectorAll("#div-likes")
 div_likes.forEach((div) => {
     div.addEventListener("click", function () {

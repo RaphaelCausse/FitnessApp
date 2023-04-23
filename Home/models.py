@@ -6,65 +6,6 @@ from django.core.validators import MinValueValidator
 from datetime import timedelta, date
 
 
-class Activity(models.Model):
-    """ Activity data. """
-    class ActivityType(models.TextChoices):
-        # https://evofitness.de/en/magazine/training/welche-sportart-verbrennt-am-meisten-kalorien-wir-l%C3%B6sen-auf
-        YOGA = 'YOGA', _('Yoga')
-        SWIMMING = 'SWIM', _('Swimming')
-        JOGGING = 'JOGG', _('Jogging')
-        CYCLING = 'CYCL', _('Cycling')
-        SPINNING = 'SPIN', _('Running')
-        LIFT_WEIGHT = 'LWGT', _('Lift Weight')
-        CROSS_COUNTRY_SKIING = 'CCSK', _('Cross Country Skiing')
-        HIGH_INTENSITY_INTERVAL_TRAINING = 'HIIT', _('High-intensity interval training')
-
-    activity = models.CharField(max_length=4, choices=ActivityType.choices)
-    duration = models.DurationField()
-    calories_burned_per_hour = {
-        choice: (400, 425, 650, 525, 700, 425, 600, 900)[i]
-        for i, choice in enumerate(ActivityType.choices)
-    }
-
-    def __str__(self) -> str:
-        """ Used for admin panel visibility. """
-        return self.activity
-
-    def get_calories(self):
-        """ Associate an average range of calories during an hour for a given activity. """
-        return self.calories_burned_per_hour[self.activity] * (self.duration.total_seconds() / 3600)
-
-
-class Food(models.Model):
-    """ Food data. """
-    class FoodLabel(models.TextChoices):
-        MEAL = 'MEAL', _('Meal')
-        INGR = 'INGR', _('Ingredient')
-
-    name = models.CharField(max_length=50)
-    calories = models.FloatField()
-    label = models.CharField(max_length=4, choices=FoodLabel.choices)
-
-    def __str__(self):
-        """ Used for admin panel visibility. """
-        return f"{self.label}, {self.name}"
-
-
-class Result(models.Model):
-    """ User's daily results. """
-    date = models.DateField(auto_now_add=True)
-    sleep = models.TimeField(blank=True, null=True)
-    weight = models.FloatField(blank=True, null=True)
-    waterCups = models.FloatField(default=0)
-    steps = models.PositiveSmallIntegerField(default=0)
-    activities = models.ForeignKey(Activity, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
-    meals = models.ForeignKey(Food, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
-
-    def __str__(self):
-        """ Used for admin panel visibility. """
-        return f"{self.date} of {Account.objects.get(result=self).user.username}"
-
-
 class Account(models.Model):
     """ User's account. """
     class Gender(models.TextChoices):
@@ -93,7 +34,6 @@ class Account(models.Model):
     goalType = models.CharField(max_length=1, choices=GoalType.choices)
     goalWeight = models.FloatField(validators=[MinValueValidator(20.0)])
     goalCalories = models.PositiveSmallIntegerField(blank=True, null=True)
-    results = models.ForeignKey(Result, default=None, on_delete=models.SET_DEFAULT, blank=True, null=True)
 
     def __str__(self):
         """ Used for admin panel visibility. """
@@ -114,7 +54,70 @@ class Account(models.Model):
         elif self.gender == "F":
             baseMetabolism -= 161.0
         activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMED': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
-        self.goalCalories = round(baseMetabolism * activity.get(self.lifestyle, 1.2)) 
+        self.goalCalories = round(baseMetabolism * activity.get(self.lifestyle, 1.2))
+
+
+class Result(models.Model):
+    """ User's daily results. """
+    class Meta:
+        ordering = ['-date']
+
+    date = models.DateField(auto_now_add=True)
+    sleep = models.TimeField(blank=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    waterCups = models.FloatField(default=0)
+    steps = models.PositiveSmallIntegerField(default=0)
+    owner = models.ForeignKey(Account, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        """ Used for admin panel visibility. """
+        return f"{self.date} of {self.owner}"
+    
+
+class Activity(models.Model):
+    """ Activity data. """
+    class ActivityType(models.TextChoices):
+        # https://evofitness.de/en/magazine/training/welche-sportart-verbrennt-am-meisten-kalorien-wir-l%C3%B6sen-auf
+        YOGA = 'YOGA', _('Yoga')
+        SWIMMING = 'SWIM', _('Swimming')
+        JOGGING = 'JOGG', _('Jogging')
+        CYCLING = 'CYCL', _('Cycling')
+        SPINNING = 'SPIN', _('Running')
+        LIFT_WEIGHT = 'LWGT', _('Lift Weight')
+        CROSS_COUNTRY_SKIING = 'CCSK', _('Cross Country Skiing')
+        HIGH_INTENSITY_INTERVAL_TRAINING = 'HIIT', _('High-intensity interval training')
+
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, default=None)
+    activity = models.CharField(max_length=4, choices=ActivityType.choices)
+    duration = models.DurationField()
+    calories_burned_per_hour = {
+        choice: (400, 425, 650, 525, 700, 425, 600, 900)[i]
+        for i, choice in enumerate(ActivityType.choices)
+    }
+
+    def __str__(self) -> str:
+        """ Used for admin panel visibility. """
+        return self.activity
+
+    def get_calories(self):
+        """ Associate an average range of calories during an hour for a given activity. """
+        return self.calories_burned_per_hour[self.activity] * (self.duration.total_seconds() / 3600)
+
+
+class Food(models.Model):
+    """ Food data. """
+    class FoodLabel(models.TextChoices):
+        MEAL = 'MEAL', _('Meal')
+        INGR = 'INGR', _('Ingredient')
+
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, default=None)
+    name = models.CharField(max_length=50)
+    calories = models.FloatField()
+    label = models.CharField(max_length=4, choices=FoodLabel.choices)
+
+    def __str__(self):
+        """ Used for admin panel visibility. """
+        return f"{self.label}, {self.name}"
 
 
 class SocialPost(models.Model):
@@ -122,7 +125,7 @@ class SocialPost(models.Model):
     class Meta:
         ordering = ['-created']
 
-    author = models.ForeignKey(Account, on_delete=models.CASCADE)
+    author = models.ForeignKey(Account, on_delete=models.CASCADE, default=None)
     text = models.TextField(blank=True, null=True)
     likes = models.PositiveSmallIntegerField(default=0)
     dislikes = models.PositiveSmallIntegerField(default=0)
@@ -135,11 +138,18 @@ class SocialPost(models.Model):
 
 class LikedPost(models.Model):
     """ Posts liked. """
-    liker_id = models.ForeignKey(Account, on_delete=models.CASCADE)
-    post_id = models.ForeignKey(SocialPost, on_delete=models.CASCADE)
+    liker = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post = models.ForeignKey(SocialPost, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        """ Used for admin panel visibility. """
+        return f"{self.liker} liked {self.post.pk}"
 
 class DislikedPost(models.Model):
     """ Posts disliked. """
-    disliker_id = models.ForeignKey(Account, on_delete=models.CASCADE)
-    post_id = models.ForeignKey(SocialPost, on_delete=models.CASCADE)
+    disliker = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post = models.ForeignKey(SocialPost, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        """ Used for admin panel visibility. """
+        return f"{self.disliker} liked {self.post.pk}"

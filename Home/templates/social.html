@@ -8,6 +8,14 @@
 {% block style %}
 <link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+<style>
+    .gradient-custom {
+        border: none;
+        background: #8913ff;
+        background: -webkit-linear-gradient(to left, rgba(137,19,255,1), rgba(198,40,186,1));
+        background: linear-gradient(to left, rgba(137,19,255,1), rgba(198,40,186,1))
+    }
+</style>
 {% endblock style %}
 
 {% block script %}
@@ -40,7 +48,7 @@
 </div>
 <div class="card shadow border-start-primary mt-3">
     <div class="card-body px-3">
-        <button type="button" id="btn-add-post" class="d-block btn btn-primary btn-block fa-lg p-2 shadow border mx-auto" style="background-color: #702CF6;">
+        <button type="button" id="btn-add-post" class="d-block btn btn-primary btn-block fa-lg p-2 gradient-custom shadow border mx-auto">
             <i class="bi bi-plus-square me-2"></i>Ajoutez un post
         </button>
         <div id="form-add-post" class="d-none pt-2">

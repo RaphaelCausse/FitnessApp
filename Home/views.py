@@ -15,6 +15,7 @@ from .models import (
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
 )
+import datetime as dt
 
 
 # Create your views here.
@@ -112,8 +113,20 @@ def progress_add_view(request):
     """ User progress page. """
     context = {}
     if request.method == "POST":
-        newWeight = int(request.POST.get("weight"))
-        # TODO save in DB new weight => refactor weight storage in DB
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        new_weight = int(request.POST.get("weight"))
+
+        try:
+            # Modification du poids dans les resultats du jour
+            result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
+            result_of_day.weight = new_weight
+            result_of_day.save()
+            print(result_of_day)
+        except:
+            # Creation d'un resultat du jour.
+            new_result = Result.objects.create(weight=new_weight, owner=account)
+            print(new_result)
 
     return render(request, 'progress.html', context)
 
@@ -142,9 +155,8 @@ def social_view(request):
     posts = SocialPost.objects.all()
     current_user = User.objects.get(id=request.user.id)
     account = Account.objects.get(user=current_user)
-    liked_posts = [lp.post_id.id for lp in LikedPost.objects.filter(liker_id=account.id)]
-    disliked_posts = [dp.post_id.id for dp in DislikedPost.objects.filter(disliker_id=account.id)]
-    print(liked_posts, disliked_posts)
+    liked_posts = [lp.post.id for lp in LikedPost.objects.filter(liker=account)]
+    disliked_posts = [dp.post.id for dp in DislikedPost.objects.filter(disliker=account)]
     context = {"account": account, "posts": posts, "liked": liked_posts, "disliked": disliked_posts}
     return render(request, 'social.html', context)
 
@@ -176,43 +188,43 @@ def social_update_ajax_view(request):
         current_user = User.objects.get(id=request.user.id)
         account = Account.objects.get(user=current_user)
         postId = ajax_request.get("post_id")
-        post = SocialPost.objects.get(id=postId)
+        socialPost = SocialPost.objects.get(id=postId)
 
         # Faire les modifications sur la base de donnees
         likes = ajax_request.get("likes")
         dislikes = ajax_request.get("dislikes")
         
         # Si le post a ete like, ajout a la table LikedPost
-        if likes > post.likes:
-            post.likes += 1
+        if likes > socialPost.likes:
+            socialPost.likes += 1
             to_add = LikedPost.objects.create(
-                liker_id=account,
-                post_id=post
+                liker=account,
+                post=socialPost
             )
             to_add.save()
-            post.save()
+            socialPost.save()
         # Si le post n'est plus like, supression de la table LikedPost
-        if likes < post.likes:
-            post.likes -= 1
-            to_rem = LikedPost.objects.get(liker_id=account.id, post_id=post.id)
+        if likes < socialPost.likes:
+            socialPost.likes -= 1
+            to_rem = LikedPost.objects.get(liker=account, post=socialPost)
             to_rem.delete()
-            post.save()
+            socialPost.save()
         
         # Si le post a ete dislike, ajout a la table DislikedPost
-        if dislikes > post.dislikes:
-            post.dislikes += 1
+        if dislikes > socialPost.dislikes:
+            socialPost.dislikes += 1
             to_add = DislikedPost.objects.create(
-                disliker_id=account,
-                post_id=post
+                disliker=account,
+                post=socialPost
             )
             to_add.save()
-            post.save()
+            socialPost.save()
         # Si le post n'est plus dislike, suppression de la table DislikedPost
-        if dislikes < post.dislikes:
-            post.dislikes -= 1
-            to_rem = DislikedPost.objects.get(disliker_id=account.id, post_id=post.id)
+        if dislikes < socialPost.dislikes:
+            socialPost.dislikes -= 1
+            to_rem = DislikedPost.objects.get(disliker=account, post=socialPost)
             to_rem.delete()
-            post.save()
+            socialPost.save()
         
     return JsonResponse(response)
 
