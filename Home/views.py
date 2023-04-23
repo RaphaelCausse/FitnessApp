@@ -98,7 +98,24 @@ def index_view(request):
 @login_required(login_url='/login/')
 def home_view(request):
     """ User home page. """
-    return render(request, 'home.html')
+    context = {}
+
+    current_user = User.objects.get(id=request.user.id)
+    account = Account.objects.get(user=current_user)
+
+    # TODO Recup les calories du jour de Food, les calories du jour de Activity
+    day_food_calories = 1250 # TODO
+    day_activity_calories = 50 # TODO
+    # TODO Moyenne de calories journalieres des 15 derniers jours
+    average_calories = 50 # TODO
+
+    context = {
+        "goal_calories": account.goalCalories,
+        "day_food_calories": day_food_calories,
+        "day_activity_calories": day_activity_calories,
+        "average_calories": average_calories,
+    }
+    return render(request, 'home.html', context)
 
 
 @login_required(login_url='/login/')
