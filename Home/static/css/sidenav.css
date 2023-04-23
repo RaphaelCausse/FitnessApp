@@ -1,3 +1,7 @@
+body {
+    min-width: 420px;
+}
+
 span{
     color: black;
 }
@@ -13,7 +17,6 @@ span{
 }
 
 #nav-container {
-    /* min-width: 370px; */
     background-color: #702CF6;
 }
 

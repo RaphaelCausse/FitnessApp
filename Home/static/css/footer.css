@@ -5,7 +5,8 @@ body {
 footer{
     position: absolute;
     height: auto;
-    width: 100vw;
+    width: 100%;
+    min-width: 420px;
     padding-top: 30px;
 }
 .footer-content{
