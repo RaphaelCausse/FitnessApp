@@ -1,0 +1,181 @@
+#prog {
+    height: 25px;
+}
+
+/* #prog_bar {
+    width: 50%;
+} */
+
+/* .icon_add {
+     color: #702CF6; 
+    color: black;
+}
+
+.icon_add:hover{
+    color: white;
+} */
+
+#add{
+    color: black;
+}
+
+#add:hover{
+    color: white;
+    background-color: rgb(242, 151, 0);
+    border-color: rgb(242, 151, 0);
+}
+
+#div_select {
+    display: none;
+    /* background-color: #c6aaff; */
+    background-color: rgb(242, 151, 0);
+}
+
+.list {
+    height: 70px;
+}
+
+.chart-area {
+    width: 400px;
+}
+
+#plus {
+    background-color: white;
+}
+
+/* #search {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+} */
+
+/* #search_bar {
+    height: 20px;
+    width: 100%;
+    padding: 12px 10px;
+    border-radius: 10px;
+} */
+
+#product_list {
+    /* margin-top: 7px;
+    margin-left: 10px;
+    height: 0px; */
+    overflow-y: scroll;
+}
+
+.product {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* margin-top: 5px;
+    padding: 5px; */
+    cursor: pointer;
+    background-color:rgb(241, 241, 241);
+    /* border-radius: 10px; */
+}
+
+/* .product-name {
+    text-align: center;
+} */
+
+.product-nutrients {
+    transition: height 0.3s ease-in-out 0s;
+    /* display: grid; */
+    /* column-gap: 4px;
+    row-gap: 4px; */
+    grid-template-columns: repeat(2, 1fr);
+    /* text-align: center; */
+    font-size: 10pt;
+}
+
+.product>.product-nutrients {
+    height: 0;
+    overflow: hidden;
+}
+  
+.product:hover .product-nutrients {
+    visibility: visible;
+    height: 60px;
+    margin: 7px;
+    transition: height 0.3s ease 175ms;
+}
+
+.product-energy {
+    /* border-radius: 5px;
+    padding: 3px; */
+    background-color: rgb(255, 238, 144);
+}
+
+.product-protein {
+    /* border-radius: 5px;
+    padding: 3px; */
+    background-color: rgb(164, 255, 164);
+}
+
+.product-lipid {
+    /* border-radius: 5px;
+    padding: 3px; */
+    background-color: rgb(255, 140, 140);
+}
+
+.product-carbohydrate {
+    /* border-radius: 5px;
+    padding: 3px; */
+    background-color: rgb(166, 247, 252);
+}
+
+#search-product {
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    /* margin-top: 40px; */
+    display: none;
+
+}
+
+/* #search-product>button {
+    height: fit-content;
+    width: fit-content;
+    padding:10px;
+    border-radius: 10px;
+} */
+
+#searched-product {
+    /* margin-left: 70px; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+}
+
+#searched-product>.product-nutrients {
+    /* margin-top: 15px;
+    width: 100%; */
+}
+
+/* #searched-product>img {
+    margin-top: 25px;
+} */
+
+#cancel{
+    color: white;
+    border-color: white;
+}
+
+#cancel:hover{
+    color: rgb(242, 151, 0);
+    border-color: rgb(242, 151, 0);
+    background-color: white;
+}
+
+#save{
+    color: white;
+    border-color: white;
+}
+
+#save:hover{
+    color: rgb(242, 151, 0);
+    border-color: rgb(242, 151, 0);
+    background-color: white;
+}
+

@@ -10,12 +10,14 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import (
-    Result, Account, SocialPost, LikedPost, DislikedPost,
+    Result, Account, SocialPost, LikedPost, DislikedPost, Meal, Food,
 )
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
 )
 import datetime as dt
+from . import helpers
+import json
 
 
 # Create your views here.
@@ -151,8 +153,8 @@ def progress_add_view(request):
 @login_required(login_url='/login/')
 def nutrition_view(request):
     """ User daily nutrition entries page. """
-    return render(request, 'nutrition.html')
-
+    context = helpers.get_calories_of_the_day(request)
+    return render(request, 'nutrition.html', context)
 
 @login_required(login_url='/login/')
 def activity_view(request):
@@ -269,3 +271,38 @@ def parameters_view(request):
         age = account.get_age()
         context = {"account": account, "age": age}
     return render(request, 'parameters.html', context)
+
+@csrf_exempt
+def autocomplete(request):
+    if request.method == "POST":
+        pattern = request.POST.get('product')
+        products = helpers.autocomplete_products(pattern)
+        return JsonResponse({"products": products}, status=200, safe=False)
+    return JsonResponse({"error": ""}, status=400, safe=False)
+
+@csrf_exempt
+def search_product(request):
+    if request.method == "POST":
+        product = request.POST.get('product')
+        product_index = int(request.POST.get('product-index'))
+        product_data = helpers.search_product(product, product_index)
+        return JsonResponse(product_data, status=200, safe=False)
+    return JsonResponse({"error": ""}, status=400, safe=False)
+
+@csrf_exempt
+def add_product_to_db(request):
+    if request.method == "POST":
+        data = request.POST
+        helpers.add_product_to_db(data)
+        return JsonResponse({"success": "Product added"}, status=200, safe=False)
+    return JsonResponse({"error": ""}, status=400, safe=False)
+
+@csrf_exempt
+def add_product_to_user(request):
+    if request.method == "POST":
+        data = request.POST
+        user = User.objects.get(id=request.user.id)
+        helpers.add_product_to_user(user, data)
+        calories_of_the_day = json.dumps(list(helpers.get_calories_of_the_day(request).values()))
+        return JsonResponse(calories_of_the_day, status=200, safe=False)
+    return JsonResponse({"error": ""}, status=400, safe=False)

@@ -73,7 +73,6 @@ class Result(models.Model):
         """ Used for admin panel visibility. """
         return f"{self.date} of {self.owner}"
     
-
 class Activity(models.Model):
     """ Activity data. """
     class ActivityType(models.TextChoices):
@@ -104,15 +103,35 @@ class Activity(models.Model):
         return self.calories_burned_per_hour[self.activity] * (self.duration.total_seconds() / 3600)
 
 
+class Meal(models.Model):
+    """ User's meal. """
+
+    class MealType(models.TextChoices):
+        BREAKFAST = 'BRKF', _('Breakfast')
+        MORNING_SNACK = 'MNSN', _('Morning Snack')
+        LUNCH = 'LNCH', _('Lunch')
+        SNACK = 'SNCK', _('Snack')
+        DINNER = 'DNNR', _('Dinner')
+    
+    mealType = models.CharField(max_length=4, choices=MealType.choices)
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, null=True)
+
+
 class Food(models.Model):
     """ Food data. """
     class FoodLabel(models.TextChoices):
         MEAL = 'MEAL', _('Meal')
         INGR = 'INGR', _('Ingredient')
 
-    result = models.ForeignKey(Result, on_delete=models.CASCADE, default=None)
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50)
-    calories = models.FloatField()
+    energy = models.FloatField()
+    lipid = models.FloatField()
+    carbohydrate = models.FloatField()
+    sugar = models.FloatField()
+    protein = models.FloatField()
+    fiber = models.FloatField()
+    water = models.FloatField()
     label = models.CharField(max_length=4, choices=FoodLabel.choices)
 
     def __str__(self):

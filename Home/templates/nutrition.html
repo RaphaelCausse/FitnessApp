@@ -8,21 +8,148 @@
 {% block style %}
 <link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/nutrition.css' %}" rel="stylesheet" type="text/css">
 {% endblock style %}
 
 {% block script %}
+<script src="{% static 'js/bootstrap.js' %}" defer></script>
+<script src="{% static 'js/nutrition.js' %}" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 {% endblock script %}
 
 {% block main %}
+<!-- Box, a encapsuler pour tous les items -->
 <div class="card shadow border-start-primary py-2">
-    <div class="card-body px-3">
-        <h1>Nutrition</h1>
+    <div>
+        {{ hey }}
+    </div>
+    <div class="card-body">
+        <div class="container text-center p-1">
+            <div><h1 class="p-2">Nutrition</h1>Veuillez indiquer les aliments (plats et/ou ingrédients) que vous avez consommés aujourd'hui.</div>
+        </div>
+        <div class="container text-center mb-2">
+            <div class="">
+                <p>Calories à consommés par jour : <i>rajouter le total</i></p>
+            </div>
+        </div>
+        <div class="w-75 mt-5 mx-auto text-center justify-content-center">
+            <p>Votre consommation actuelle : </p>
+            <div class="chart-area mt-5 justify-content-center w-100 h-100 ">
+                <i id="calories-breakfast" style="display: none;">{{ breakfast }}</i>
+                <i id="calories-morning-snack" style="display: none;">{{ morning_snack }}</i>
+                <i id="calories-lunch" style="display: none;">{{ lunch }}</i>
+                <i id="calories-snack" style="display: none;">{{ snack }}</i>
+                <i id="calories-dinner" style="display: none;">{{ dinner }}</i>
+                <i id="calories-to-consume" style="display: none;">{{ calories_to_consume }}</i>
+                <!--<canvas id="my_chart" class="d-block" width="150px" height="80px"></canvas>-->
+                <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="card shadow border-start-primary py-2 mt-3">
-    <div class="card-body px-3">
-        <span>TODO: contenu</span>
+    <div class="card-body">
+        <div class="row text-center mt-2">
+            <div class="text-center mb-4 justify-content-center align-items-center d-flex flex-column">
+                <h3 class="p-5"><u>Aliments</u></h3>
+                <button type="button" class="row btn btn-outline-secondary w-50" id="add"><i class="bi bi-plus-lg icon_add"></i> Ajouter un repas</button>
+                <div class="row rounded-5 m-4 mt-4 w-75" id="div_select">
+                    <form class="form-group" autocomplete="off">
+                        <div class="d-flex mt-4 mb-2 me-2  justify-content-center align-items-center" id="box1">
+                            <label for="type" class="m-2 p-1 "> Type de repas : </label>
+                            <select name="type" class="form-select m-1 w-50" id="selected-product-period" aria-placeholder="Selectionner un type de repas"><!--voir comment mettre un texte de base-->
+                                <option value="petit-dejeuner">Petit-déjeuner</option>
+                                <option value="collation">Collation matinale</option>
+                                <option value="dejeuner">Déjeuner</option>
+                                <option value="gouter">Goûter</option>
+                                <option value="diner">Dîner</option>
+                            </select>
+                        </div>
+                        <div class="d-flex my-1 ms-3 justify-content-center align-items-center" id="box2">
+                            <label for="type" class="my-2 ms-2 me-2 p-1"> Catégorie : </label>
+                            <select name="type" class="form-select m-1 w-50" id="selected-product-category" aria-placeholder="Selectionner un type de repas"><!--voir comment mettre un texte de base-->
+                                <option value="">Plat</option>
+                                <option value="">Ingrédient</option>
+                            </select>
+                        </div>
+                        <div class="mt-3" id="select">
+                            <label for="type" class="m-2"> Produits : </label>
+                            <div class="input-group mx-auto w-75">
+                                <span class="input-group-text mx-auto my-auto" id="span_box3"><i class="bi bi-search"></i></span>
+                                <input type="text" class="rounded w-75 mx-auto my-auto form-control" id="search_bar" placeholder="Selection du produit" aria-label="Username" aria-describedby="basic-addon1">
+                                <!-- <button class="btn btn-sm my-auto mx-1 border border-white h-50 rounded-circle" id="plus" title="Ajouter le produit"><i class="bi bi-plus-lg"></i></button> -->
+                            </div>
+                            <div id="product_list" class="w-75 my-2 align-items-center mx-auto"></div>
+                            {% verbatim %}
+                            <script id="product-template" type="text/x-handlebars-template">
+                                {{#each products}}
+                                <div class="product d.flex flex-column mt-1 me-1 p-1 rounded">
+                                    <div class="product-name text-center">
+                                        <div> {{ name }} </div>
+                                    </div>
+                                    <div class="product-nutrients d-grid align-items-center">
+                                        <div class="product-energy mb-1 me-1 p-1 rounded">E - {{ energy }}cal</div>
+                                        <div class="product-lipid mb-1 p-1 rounded">L - {{ lipid }}g</div>
+                                        <div class="product-carbohydrate me-1 p-1 rounded">G - {{ carbohydrate }}g</div>
+                                        <div class="product-protein p-1 rounded">P - {{ protein }}g</div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </script>
+                            {% endverbatim %}                                
+                        </div>
+
+                        <div id="product-container"></div>
+                        {% verbatim %}
+                        <script id="searched-product-template" class="flex-column justify-content-space-between align-items-center my-2 mx-auto" type="text/x-handlebars-template">
+                            <div id="searched-product" class="w-50 mx-auto align-items-center">
+                                <input id="product-name" value="{{ name }}" class="input-group input-group-text mb-2 mx-auto" >
+                                <div class="product-nutrients" class="w-50 mx-auto">
+                                    <div class="product-energy mb-1 rounded">E - {{ energy }}cal</div>
+                                    <div class="product-lipid mb-1 rounded">L - {{ lipid }}g</div>
+                                    <div class="product-carbohydrate mb-1 rounded">G - {{ carbohydrate }}g</div>
+                                    <div class="product-sugar" style="display:none">S - {{ sugar }}g</div>
+                                    <div class="product-protein rounded">P - {{ protein }}g</div>
+                                    <div class="product-fiber" style="display:none">F - {{ fiber }}g</div>
+                                    <div class="product-water" style="display:none">W - {{ water }}g</div>
+                                </div>
+                                <img src="{{ img }}" alt="No image found" class="my-3 mx-auto w-75 h-75"><br>
+                                <button id="btn-add-product" type="button" onclick="add_product()" class="row btn btn-light">Ajouter</button>
+                            </div>
+                        </script>
+                        {% endverbatim %}
+
+                        <div id="search-product" class="flex-row justify-content-space-between align-items-center my-2">
+                            <button id="btn-prev-product" type="button" onclick="search_product('prev')" class="btn btn-light rounded px-2 py-2"> < </button>
+                            <button id="btn-search-product" type="button" onclick="search_product()" class="btn btn-light rounded px-2 py-2">Chercher produit</button>
+                            <button id="btn-next-product" type="button" onclick="search_product('next')" class="btn btn-light rounded px-2 py-2"> > </button>
+                            <i id="product-index" class="d-none">0</i>
+                            <!-- onclick="search_product()" dans le bouton de recherche -->
+                        </div>
+
+                        <div class="row w-50 mx-auto mt-3 align-items-center justify-content-center border border-white rounded" id="product-select"> 
+                            <div class="col px-1 align-items-center justify-content-center">
+                                <p class="align-middle m-0" id="selected-product-name">Produit choisi </p>
+                            </div>
+                            <div class="col px-3 ms-2 d-flex align-items-center justify-content-center">
+                                <!--<button class="btn btn-sm my-1 border border-white h-50 rounded-circle" id="moins"><i class="bi bi-dash-lg"></i></button>
+                                <p class="align-middle mx-2 my-0">quantité</p>
+                                <button class="btn btn-sm my-1 border border-white h-50 rounded-circle" id="plus"><i class="bi bi-plus-lg"></i></button>-->
+                                <input type="number" id="selected-product-quantity" class="col-auto rounded w-100 p-1 form-control" placeholder="Quantité (en g)"style="min-width: 130px;">
+                            </div>
+                        </div>
+                        <div id="div_valid" class="justify-content-center align-items-center my-4">
+                            <button class="btn" type="button" id="cancel">Annuler</button>
+                            <button class="btn" type="button" id="save">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 {% endblock main %}
