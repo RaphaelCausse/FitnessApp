@@ -6,11 +6,12 @@ $(document).ready(() => {
     const searched_product = $("#searched-product");
     const product_list = $('#product_list');
     const search_product = $('#search-product');
-    const product_select = $('#product-select');
+    const selected_product_quantity = $('#selected-product-quantity');
     
+    selected_product_quantity.hide();
     search_bar.val("");
     search_bar.on('input', (e) => {
-        product_select.hide();
+        selected_product_quantity.hide();
         product_index.text(0);
         if (searched_product.length > 0)
             searched_product.remove();
@@ -27,9 +28,9 @@ $(document).ready(() => {
                 product_list.empty();
                 if (data["products"].length == 0) {
                     search_product.show();
-                    product_list.css('height', 0);
+                    product_list.hide();
                 } else {
-                    product_list.css('height', 300);
+                    product_list.show();
                     search_product.hide();
                     const template = Handlebars.compile($("#product-template").html());
                     product_list.html(template(data)); 
@@ -38,8 +39,7 @@ $(document).ready(() => {
                         element.addEventListener("click", function(e) {
                             let nom = element.querySelector(".product-name").childNodes[1].textContent;
                             nom = nom.substring(1, nom.length - 1)
-                            product_select.show();
-                            $('#selected-product-name')[0].textContent = nom;
+                            selected_product_quantity.show();
                             search_bar.val(nom);
                             product_list.hide();
                         });
@@ -53,6 +53,11 @@ $(document).ready(() => {
             }
         });
     });
+    search_bar.on('blur', (e) => {
+        if (search_bar.val() == "")
+            product_list.hide()
+    });
+
 });
 
 
@@ -75,7 +80,7 @@ function search_product (which = "current") {
         data: formData,
         success: (data) => {
             $("#searched-product").remove();
-            const template = Handlebars.compile($("#searched-product-template").html());
+            let template = Handlebars.compile($("#searched-product-template").html());
             $("#product-container").html(template(data));
             $("#product-index").text(formData.get('product-index'));
         },
@@ -138,7 +143,6 @@ add.addEventListener("click", (e) =>{
 var add = document.getElementById('save');
 add.addEventListener("click", (e) => {
     let formData = new FormData();
-    console.log($('#selected-product-category'))
     formData.append("period", $('#selected-product-period').val());
     formData.append("category", "MEAL");
     formData.append("name", $('#search_bar').val());
@@ -150,10 +154,15 @@ add.addEventListener("click", (e) => {
         processData: false,
         contentType: false,
         data: formData,
-        // TODO: fix chart update
         success: (data) => {
-            nex_chart.data.datasets[0].data.push(data);
-            nex_chart.update();
+            $("#consumed-calories").textContent = data["calories"].pop();
+            nex_chart.data.datasets[0].data = data["calories"].map(String);
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+            setTimeout(() => {nex_chart.update()}, 750);
+            $("#div_select").hide()
+            $("#search_bar").val("")
+            $('#selected-product-quantity').val("");
+            $('#selected-product-quantity').hide();
         },
         error: function(xhr) {
             if (xhr.status == 400)
@@ -161,18 +170,10 @@ add.addEventListener("click", (e) => {
         }
 
     })
-    // document.getElementById("div_select").style.display="none";
-    // a modifier pour faire la sauvegarde dans la base de donné et mettre à jour le graph
 });
 
 //Création du graphique du résumé des calories
 const myChart = document.getElementById("my_chart");
-
-// début du code pour écrire le pourcentage au milieu du graphique si nécessaire
-//const counter = {
-    //id: 'counter',
-    //beforeDraw(chart, args, options);
-//}
 
 const color = ['rgb( 255, 105, 180)', 'rgb( 255, 215, 0)', 'rgb( 144, 238, 144)', 'rgb(100, 149, 237)', 'rgb(255, 127, 80)', 'rgb(230, 233, 236)']
 
@@ -223,16 +224,3 @@ const nex_chart = new Chart(
     myChart,
     config
 );
-
-
-// console.log($('#cancel')[0]);
-// $('#cancel').addEventListener("click", function(e){
-//     // $('#div_select').style.display = "none";
-//     console.log('test');
-// });
-// function Enregistrer_produit(){
-//     const nDiv = document.createElement("div");
-//     console.log("ajout");
-//     nDiv.classList.add("row");
-//     document.div_precedente.appendChild(nDiv);
-// }

@@ -57,9 +57,7 @@
 } */
 
 #product_list {
-    /* margin-top: 7px;
-    margin-left: 10px;
-    height: 0px; */
+    max-height: 300px;
     overflow-y: scroll;
 }
 
