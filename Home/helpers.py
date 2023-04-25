@@ -24,6 +24,7 @@ def get_calories_of_the_day(request):
             context[mealType.name.lower()] = 0
     
     context["calories_to_consume"] = round((goalCalories - caloriesConsumed) / goalCalories * 100, 2)
+    context["consumed_calories"] = caloriesConsumed
     return context
 
 def autocomplete_products(pattern):
@@ -36,9 +37,8 @@ def autocomplete_products(pattern):
             "protein": item["protein"],
         } for item in Food.objects.filter(name__contains=pattern, meal__isnull=True).values()
     ]
-    indexes_products = [product['name'].find(pattern) for product in products]
-    products = [product for _, product in sorted(zip(indexes_products, products), key=lambda x: x[1]['name'])]
-    return products
+    return sorted(products, key=lambda p: p["name"].find(pattern))
+
 
 def create_product_obj(off_products, start_index, n):
     products = []

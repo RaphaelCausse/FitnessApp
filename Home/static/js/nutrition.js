@@ -1,16 +1,20 @@
 $('#product-select').hide();
 
 $(document).ready(() => {
+    $("#spinner").hide();
     const search_bar = $('#search_bar');
     const product_index = $("#product-index");
     const searched_product = $("#searched-product");
     const product_list = $('#product_list');
     const search_product = $('#search-product');
-    const product_select = $('#product-select');
+    const selected_product_quantity = $('#selected-product-quantity');
     
+    selected_product_quantity.hide();
+    search_product.hide()
     search_bar.val("");
     search_bar.on('input', (e) => {
-        product_select.hide();
+        $("#product-container").hide()
+        selected_product_quantity.hide();
         product_index.text(0);
         if (searched_product.length > 0)
             searched_product.remove();
@@ -26,20 +30,19 @@ $(document).ready(() => {
             success: (data) => {
                 product_list.empty();
                 if (data["products"].length == 0) {
-                    search_product.show();
-                    product_list.css('height', 0);
+                    if (search_product.is(":hidden"))
+                        search_product.show();
+                    product_list.hide();
                 } else {
-                    product_list.css('height', 300);
+                    product_list.show();
                     search_product.hide();
                     const template = Handlebars.compile($("#product-template").html());
                     product_list.html(template(data)); 
-
                     document.querySelectorAll(".product").forEach(element => {
                         element.addEventListener("click", function(e) {
                             let nom = element.querySelector(".product-name").childNodes[1].textContent;
                             nom = nom.substring(1, nom.length - 1)
-                            product_select.show();
-                            $('#selected-product-name')[0].textContent = nom;
+                            selected_product_quantity.show();
                             search_bar.val(nom);
                             product_list.hide();
                         });
@@ -53,6 +56,11 @@ $(document).ready(() => {
             }
         });
     });
+    search_bar.on('blur', (e) => {
+        if (search_bar.val() == "")
+            product_list.hide()
+    });
+
 });
 
 
@@ -66,6 +74,7 @@ function search_product (which = "current") {
         which === "prev" && product_index > 0 ? product_index - 1 :
                                                 product_index
     );
+    $("#spinner").show()
     $.ajax({
         url: "search_product",
         enctype: 'multipart/form-data',
@@ -74,10 +83,12 @@ function search_product (which = "current") {
         contentType: false,
         data: formData,
         success: (data) => {
+            $("#spinner").fadeOut()
             $("#searched-product").remove();
-            const template = Handlebars.compile($("#searched-product-template").html());
+            let template = Handlebars.compile($("#searched-product-template").html());
             $("#product-container").html(template(data));
             $("#product-index").text(formData.get('product-index'));
+            $("#product-container").show()
         },
         error: function(xhr) {
             if (xhr.status == 400)
@@ -88,13 +99,13 @@ function search_product (which = "current") {
 
 
 function add_product() {
-    product_data = {"product": {}};
+    let formData = new FormData();
+    let product_name = $('#product-name').val().toLowerCase()
+    formData.append("name", product_name);
     nutrients = ["energy", "lipid", "carbohydrate", "sugar", "protein", "fiber", "water"];
-    product_data['name'] = $(' #product-name').val();
     $.each(nutrients, function(_, nutrient) {
-        product_data[nutrient] = $(".product-" + nutrient).text().match(/\d+(?:\.\d+)?/)[0];
+        formData.append(nutrient, $(".product-" + nutrient).text().match(/\d+(?:\.\d+)?/)[0]);
     });
-    let formData = new FormData(produc_data);
     $.ajax({
         url: "add_product_to_db",
         enctype: 'multipart/form-data',
@@ -103,7 +114,10 @@ function add_product() {
         contentType: false,
         data: formData,
         success: (data) => {
-            console.log("The product has been added");
+            $("#product-container").hide()
+            $("#search-product").hide()
+            search_bar.value = product_name
+            $("#search_bar").trigger("input")
         },
         error: function(xhr) {
             if (xhr.status == 400)
@@ -138,7 +152,6 @@ add.addEventListener("click", (e) =>{
 var add = document.getElementById('save');
 add.addEventListener("click", (e) => {
     let formData = new FormData();
-    console.log($('#selected-product-category'))
     formData.append("period", $('#selected-product-period').val());
     formData.append("category", "MEAL");
     formData.append("name", $('#search_bar').val());
@@ -152,8 +165,14 @@ add.addEventListener("click", (e) => {
         data: formData,
         // TODO: fix chart update
         success: (data) => {
-            nex_chart.data.datasets[0].data.push(data);
-            nex_chart.update();
+            $("#consumed-calories").textContent = data["calories"].pop();
+            nex_chart.data.datasets[0].data = data["calories"].map(String);
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+            setTimeout(() => {nex_chart.update()}, 750);
+            $("#div_select").hide()
+            $("#search_bar").val("")
+            $('#selected-product-quantity').val("");
+            $('#selected-product-quantity').hide();
         },
         error: function(xhr) {
             if (xhr.status == 400)

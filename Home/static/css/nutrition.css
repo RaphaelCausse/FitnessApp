@@ -57,9 +57,7 @@
 } */
 
 #product_list {
-    /* margin-top: 7px;
-    margin-left: 10px;
-    height: 0px; */
+    max-height: 300px;
     overflow-y: scroll;
 }
 
@@ -123,40 +121,6 @@
     background-color: rgb(166, 247, 252);
 }
 
-#search-product {
-    /* display: flex; */
-    /* flex-direction: row; */
-    /* justify-content: space-between; */
-    /* align-items: center; */
-    /* margin-top: 40px; */
-    display: none;
-
-}
-
-/* #search-product>button {
-    height: fit-content;
-    width: fit-content;
-    padding:10px;
-    border-radius: 10px;
-} */
-
-#searched-product {
-    /* margin-left: 70px; */
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: space-between; */
-    /* align-items: center; */
-}
-
-#searched-product>.product-nutrients {
-    /* margin-top: 15px;
-    width: 100%; */
-}
-
-/* #searched-product>img {
-    margin-top: 25px;
-} */
-
 #cancel{
     color: white;
     border-color: white;
@@ -179,3 +143,36 @@
     background-color: white;
 }
 
+.spinner {
+    animation: rotator 1.4s linear infinite;
+  }
+  
+  @keyframes rotator {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(270deg); }
+  }
+  
+  .path {
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    stroke: #fff;
+    transform-origin: center;
+    animation: dash 1.4s ease-in-out infinite;
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 187;
+    }
+    50% {
+      stroke-dashoffset: 47;
+      transform: rotate(135deg);
+    }
+    100% {
+      stroke-dashoffset: 187;
+      stroke-opacity: 0;
+      transform: rotate(450deg);
+      visibility: visible;
+    }
+  }
+  

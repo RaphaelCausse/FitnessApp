@@ -154,6 +154,8 @@ def progress_add_view(request):
 def nutrition_view(request):
     """ User daily nutrition entries page. """
     context = helpers.get_calories_of_the_day(request)
+    account = Account.objects.get(user=request.user)
+    context.update({"calories_goal": account.goalCalories})
     return render(request, 'nutrition.html', context)
 
 @login_required(login_url='/login/')
@@ -303,6 +305,6 @@ def add_product_to_user(request):
         data = request.POST
         user = User.objects.get(id=request.user.id)
         helpers.add_product_to_user(user, data)
-        calories_of_the_day = json.dumps(list(helpers.get_calories_of_the_day(request).values()))
-        return JsonResponse(calories_of_the_day, status=200, safe=False)
+        calories_of_the_day = list(helpers.get_calories_of_the_day(request).values())
+        return JsonResponse({"calories": calories_of_the_day}, status=200, safe=False)
     return JsonResponse({"error": ""}, status=400, safe=False)
