@@ -8,6 +8,7 @@ $(document).ready(() => {
     const product_list = $('#product_list');
     const search_product = $('#search-product');
     const selected_product_quantity = $('#selected-product-quantity');
+    const selected_product_quantity = $('#selected-product-quantity');
     
     selected_product_quantity.hide();
     search_product.hide()
@@ -163,7 +164,6 @@ add.addEventListener("click", (e) => {
         processData: false,
         contentType: false,
         data: formData,
-        // TODO: fix chart update
         success: (data) => {
             $("#consumed-calories").textContent = data["calories"].pop();
             nex_chart.data.datasets[0].data = data["calories"].map(String);
@@ -180,18 +180,10 @@ add.addEventListener("click", (e) => {
         }
 
     })
-    // document.getElementById("div_select").style.display="none";
-    // a modifier pour faire la sauvegarde dans la base de donné et mettre à jour le graph
 });
 
 //Création du graphique du résumé des calories
 const myChart = document.getElementById("my_chart");
-
-// début du code pour écrire le pourcentage au milieu du graphique si nécessaire
-//const counter = {
-    //id: 'counter',
-    //beforeDraw(chart, args, options);
-//}
 
 const color = ['rgb( 255, 105, 180)', 'rgb( 255, 215, 0)', 'rgb( 144, 238, 144)', 'rgb(100, 149, 237)', 'rgb(255, 127, 80)', 'rgb(230, 233, 236)']
 
@@ -242,16 +234,3 @@ const nex_chart = new Chart(
     myChart,
     config
 );
-
-
-// console.log($('#cancel')[0]);
-// $('#cancel').addEventListener("click", function(e){
-//     // $('#div_select').style.display = "none";
-//     console.log('test');
-// });
-// function Enregistrer_produit(){
-//     const nDiv = document.createElement("div");
-//     console.log("ajout");
-//     nDiv.classList.add("row");
-//     document.div_precedente.appendChild(nDiv);
-// }

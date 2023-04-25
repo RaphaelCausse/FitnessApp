@@ -19,7 +19,6 @@
 {% endblock script %}
 
 {% block main %}
-<!-- Box, a encapsuler pour tous les items -->
 <div class="card shadow border-start-primary py-2">
     <div>
         {{ hey }}
@@ -31,9 +30,11 @@
         <div class="container text-center mb-2">
             <div class="">
                 <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
+                <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
             </div>
         </div>
         <div class="w-75 mt-5 mx-auto text-center justify-content-center">
+            <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
             <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
             <div class="chart-area mt-5 justify-content-center w-100 h-100 ">
                 <i id="calories-breakfast" style="display: none;">{{ breakfast }}</i>
@@ -42,7 +43,6 @@
                 <i id="calories-snack" style="display: none;">{{ snack }}</i>
                 <i id="calories-dinner" style="display: none;">{{ dinner }}</i>
                 <i id="calories-to-consume" style="display: none;">{{ calories_to_consume }}</i>
-                <!--<canvas id="my_chart" class="d-block" width="150px" height="80px"></canvas>-->
                 <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             </div>
@@ -83,7 +83,6 @@
                                 <div class="d-flex justify-content-center align-items-center">
                                     <svg id="spinner" class="m-3" width="32" height="32" stroke="#fff" viewBox="0 0 24 24"><style>.spinner_V8m1{transform-origin:center;animation:spinner_zKoa 2s linear infinite}.spinner_V8m1 circle{stroke-linecap:round;animation:spinner_YpZS 1.5s ease-in-out infinite}@keyframes spinner_zKoa{100%{transform:rotate(360deg)}}@keyframes spinner_YpZS{0%{stroke-dasharray:0 150;stroke-dashoffset:0}47.5%{stroke-dasharray:42 150;stroke-dashoffset:-16}95%,100%{stroke-dasharray:42 150;stroke-dashoffset:-59}}</style><g class="spinner_V8m1"><circle cx="12" cy="12" r="9.5" fill="none" stroke-width="3"/></g></svg>
                                   </div>
-                                <!-- <button class="btn btn-sm my-auto mx-1 border border-white h-50 rounded-circle" id="plus" title="Ajouter le produit"><i class="bi bi-plus-lg"></i></button> -->
                             </div>
                             <div id="product_list" class="w-75 my-2 align-items-center mx-auto"></div>
                             {% verbatim %}
