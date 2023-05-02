@@ -34,21 +34,23 @@ function validate_weight() {
 
 // Graphique de donnees
 
-// TODO Recup les donnees de poids, taille, objectif de poids avec requete ajax
-
+// Recupreation des donnees pour le graphique
 // Preparation de la requete ajax avec les donnees a recuperer du serveur
 let formData = new FormData()
 formData.append("goal_weight", 0)
-
+formData.append("height", 0)
+formData.append("dates", [])
+formData.append("weights", [])
 // Envoi requete ajax au server
-// const request = new Request('/social/update/', {method: 'POST', body: formData})
-// fetch(request)
-// .then(response => response.json())
-// .then(result => {
-//     console.log(result);
-// })
+const request = new Request('/progress/ajax', {method: 'POST', body: formData})
+fetch(request)
+.then(response => response.json())
+.then(result => {
+    console.log(result);
+})
 
 // Graphique de donnees, sur les 15 derniers jours
+// TODO Refactor 
 
 var ctx = document.getElementById('canvas').getContext('2d');
 var chart = new Chart(ctx, {

@@ -98,31 +98,31 @@ def index_view(request):
 @login_required(login_url='/login/')
 def home_view(request):
     """ User home page. """
-    context = {}
+    try:
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
 
-    current_user = User.objects.get(id=request.user.id)
-    account = Account.objects.get(user=current_user)
+        # TODO Recup les calories du jour de Food, les calories du jour de Activity
+        day_food_calories = 1250 # TODO
+        day_activity_calories = 50 # TODO
+        # TODO Moyenne de calories journalieres des 15 derniers jours
+        average_calories = 50 # TODO
 
-    # TODO Recup les calories du jour de Food, les calories du jour de Activity
-    day_food_calories = 1250 # TODO
-    day_activity_calories = 50 # TODO
-    # TODO Moyenne de calories journalieres des 15 derniers jours
-    average_calories = 50 # TODO
-
-    context = {
-        "goal_calories": account.goalCalories,
-        "day_food_calories": day_food_calories,
-        "day_activity_calories": day_activity_calories,
-        "average_calories": average_calories,
-    }
+        context = {
+            "goal_calories": account.goalCalories,
+            "day_food_calories": day_food_calories,
+            "day_activity_calories": day_activity_calories,
+            "average_calories": average_calories,
+        }
+    except:
+        context = {}
     return render(request, 'home.html', context)
 
 
 @login_required(login_url='/login/')
 def progress_view(request):
     """ User progress page. """
-    context = {}
-    return render(request, 'progress.html', context)
+    return render(request, 'progress.html')
 
 
 @login_required(login_url='/login/')
@@ -146,6 +146,46 @@ def progress_add_view(request):
             print(new_result)
 
     return render(request, 'progress.html', context)
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def progress_ajax_view(request):
+    """ User progress page. """
+    response = {}
+    
+    if request.method == 'POST':
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        response = request.POST.copy()
+        response["goal_weight"] = account.goalWeight
+        response["height"] = account.height
+
+        try:
+            # Recuperer les derniers poids, max 15 derniers jours
+            date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
+            results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
+            dates = []
+            weights = []
+            for res in results:
+                dates.append(str(res.date))
+                weights.append(str(res.weight))
+            response["dates"] = dates
+            response["weights"] = weights
+        except:
+            # Recuperer le dernier poids enregistrer, minimum le 1er a la creation du compte
+            result = Result.objects.filter(owner=account)[0]
+            response["dates"] = result.date
+            response["weights"] = result.weight
+
+    return JsonResponse(response)
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def progress_update_ajax_view(request):
+    """ User progress page. """
+    return render(request, 'progress.html')
 
 
 @login_required(login_url='/login/')
