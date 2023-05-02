@@ -40,7 +40,6 @@ function validate_weight() {
 let formData = new FormData()
 formData.append("goal_weight", 0)
 
-
 // Envoi requete ajax au server
 // const request = new Request('/social/update/', {method: 'POST', body: formData})
 // fetch(request)
