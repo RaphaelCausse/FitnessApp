@@ -8,7 +8,6 @@ $(document).ready(() => {
     const product_list = $('#product_list');
     const search_product = $('#search-product');
     const selected_product_quantity = $('#selected-product-quantity');
-    const selected_product_quantity = $('#selected-product-quantity');
     
     selected_product_quantity.hide();
     search_product.hide()
@@ -136,9 +135,11 @@ addButton.addEventListener("click", function() {
   if (isShown) {
     divSelect.style.display = "none";
     isShown = false;
-  } else {
+    window.scrollTo(0, 0);
+} else {
     divSelect.style.display = "block";
     isShown = true;
+    window.scrollTo(0, document.body.scrollHeight);
   }
 });
 

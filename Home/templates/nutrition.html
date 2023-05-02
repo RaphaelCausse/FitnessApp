@@ -20,32 +20,30 @@
 
 {% block main %}
 <div class="card shadow border-start-primary py-2">
-    <div>
-        {{ hey }}
-    </div>
     <div class="card-body">
-        <div class="container text-center p-1">
-            <div><h1 class="p-2">Nutrition</h1>Veuillez indiquer les aliments (plats et/ou ingrédients) que vous avez consommés aujourd'hui.</div>
-        </div>
-        <div class="container text-center mb-2">
-            <div class="">
-                <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
-                <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
-            </div>
-        </div>
-        <div class="w-75 mt-5 mx-auto text-center justify-content-center">
-            <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
-            <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
-            <div class="chart-area mt-5 justify-content-center w-100 h-100 ">
-                <i id="calories-breakfast" style="display: none;">{{ breakfast }}</i>
-                <i id="calories-morning-snack" style="display: none;">{{ morning_snack }}</i>
-                <i id="calories-lunch" style="display: none;">{{ lunch }}</i>
-                <i id="calories-snack" style="display: none;">{{ snack }}</i>
-                <i id="calories-dinner" style="display: none;">{{ dinner }}</i>
-                <i id="calories-to-consume" style="display: none;">{{ calories_to_consume }}</i>
-                <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            </div>
+        <h1 class="px-3">Nutrition</h1>
+        <p class="px-3 m-0">Veuillez indiquer les aliments (plats et/ou ingrédients) que vous avez consommés aujourd'hui.</p>
+    </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+
+    <div id="user_id" hidden>{{ request.user.id }}</div>
+
+    <div class="container text-center">
+        <p class="px-3 mb-0 mt-2">Calories à consommés par jour : <b>{{ calories_goal }}</b></p>
+    </div>
+    <div class="w-75 my-2 mx-auto text-center justify-content-center">
+        <p>Votre consommation actuelle : <b id="consumed-calories">{{ consumed_calories }}</b></p>
+        <div class="chart-area mt-3 justify-content-center w-100 h-100 ">
+            <i id="calories-breakfast" style="display: none;">{{ breakfast }}</i>
+            <i id="calories-morning-snack" style="display: none;">{{ morning_snack }}</i>
+            <i id="calories-lunch" style="display: none;">{{ lunch }}</i>
+            <i id="calories-snack" style="display: none;">{{ snack }}</i>
+            <i id="calories-dinner" style="display: none;">{{ dinner }}</i>
+            <i id="calories-to-consume" style="display: none;">{{ calories_to_consume }}</i>
+            <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
     </div>
 </div>
@@ -54,7 +52,7 @@
     <div class="card-body">
         <div class="row text-center mt-2">
             <div class="text-center mb-4 justify-content-center align-items-center d-flex flex-column">
-                <h3 class="p-5"><u>Aliments</u></h3>
+                <h3 class="py-2"><u>Aliments</u></h3>
                 <button type="button" class="row btn btn-outline-secondary w-50" id="add"><i class="bi bi-plus-lg icon_add"></i> Ajouter un repas</button>
                 <div class="row rounded-5 m-4 mt-4 w-75" id="div_select">
                     <form class="form-group" autocomplete="off">

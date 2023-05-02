@@ -294,6 +294,7 @@ def search_product(request):
 @csrf_exempt
 def add_product_to_db(request):
     if request.method == "POST":
+        print("add_product_to_db >> ", request)
         data = request.POST
         helpers.add_product_to_db(data)
         return JsonResponse({"success": "Product added"}, status=200, safe=False)
@@ -301,9 +302,16 @@ def add_product_to_db(request):
 
 @csrf_exempt
 def add_product_to_user(request):
+    print("add_product_to_user >> ", request)
     if request.method == "POST":
         data = request.POST
+
+        # TODO Add a user_id field in the request from JS ajax
+        # get user id like this example : request.POST['user_id'] 
+        # => get User 
         user = User.objects.get(id=request.user.id)
+        # END TODO
+
         helpers.add_product_to_user(user, data)
         calories_of_the_day = list(helpers.get_calories_of_the_day(request).values())
         return JsonResponse({"calories": calories_of_the_day}, status=200, safe=False)

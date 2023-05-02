@@ -24,7 +24,7 @@ def get_calories_of_the_day(request):
             context[mealType.name.lower()] = 0
     
     context["calories_to_consume"] = round((goalCalories - caloriesConsumed) / goalCalories * 100, 2)
-    context["consumed_calories"] = caloriesConsumed
+    context["consumed_calories"] = round(caloriesConsumed, 2)
     return context
 
 def autocomplete_products(pattern):
