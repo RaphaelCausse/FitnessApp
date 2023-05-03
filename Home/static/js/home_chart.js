@@ -14,24 +14,13 @@ for (let i = 1; i <= 15; i++) {
 
 // TODO Recup les calories sur les 15 derniers jours, depuis Activity et Food, avec requete ajax
 
-// Preparation de la requete ajax avec les donnes a envoyer
-let formData = new FormData()
-
-// Envoi requete ajax au server
-// const request = new Request('/social/update/', {method: 'POST', body: formData})
-// fetch(request)
-// .then(response => response.json())
-// .then(result => {
-//     console.log(result);
-// })
-
 let chart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: lastFifteenDays,
+    labels: [],
     datasets: [{
       label:"Calories",
-      data: [0,0,0,0,0,234,0,245,0,1230,0,0,0,0,0],
+      data: [],
       backgroundColor: [
         'rgb(242, 151, 0,0.3)',
       ],
@@ -57,3 +46,21 @@ let chart = new Chart(ctx, {
     }
   }
 });
+
+
+let formData = new FormData()
+formData.append("dates", [])
+formData.append("calories", [])
+// Envoi requete ajax au server
+const request = new Request('/home/ajax', {method: 'POST', body: formData})
+fetch(request)
+.then(response => response.json())
+.then(result => {
+    // Chart des poids
+    chart.data.labels = result.dates
+    chart.data.datasets[0].data = result.calories
+    chart.update()
+})
+
+
+

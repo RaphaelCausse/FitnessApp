@@ -133,17 +133,37 @@ def home_view(request):
             }
         except:
             context = {
-                 "goal_calories": account.goalCalories,
+                "goal_calories": account.goalCalories,
                 "day_food_calories": 0,
                 "day_activity_calories": 0,
                 "average_calories": 0,
             }
     
-    if request.method == 'POST':
-        # TODO Ajax query for chartjs update on homepage
-        pass
-
     return render(request, 'home.html', context)
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def home_ajax_view(request):
+    if request.method == 'POST':
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        response = request.POST.copy()
+        dates = []
+        calories = []
+        for i in range (0, 15):
+            dates.append((dt.datetime.today() - dt.timedelta(days=i)).strftime("%d/%m"))
+            try:
+                result = Result.objects.get(date=(dt.datetime.today() - dt.timedelta(days=i)).strftime("%Y-%m-%d"), owner=account)
+                calories.append(get_nutrition_calories_of_day(result))
+            except:
+                calories.append(0)
+        dates.reverse()
+        calories.reverse()        
+        response["dates"] = dates
+        response["calories"] = calories
+
+        return JsonResponse(response)
 
 
 @login_required(login_url='/login/')

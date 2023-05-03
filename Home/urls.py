@@ -7,6 +7,7 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout'),
     path('home/', views.home_view, name='home'),
+    path('home/ajax', views.home_ajax_view, name='home_ajax'),
     path('progress/', views.progress_view, name='progress'),
     path('progress/add', views.progress_add_view, name='progress_add'),
     path('progress/ajax', views.progress_ajax_view, name='progress_ajax'),
