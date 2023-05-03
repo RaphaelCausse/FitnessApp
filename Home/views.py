@@ -10,10 +10,11 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import (
-    Result, Account, SocialPost, LikedPost, DislikedPost, Meal, Food,
+    Result, Account, Activity, SocialPost, LikedPost, DislikedPost, Meal, Food,
 )
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
+    get_nutrition_calories_of_day, get_activity_calories_of_day,
 )
 import datetime as dt
 from . import helpers
@@ -100,24 +101,46 @@ def index_view(request):
 @login_required(login_url='/login/')
 def home_view(request):
     """ User home page. """
-    try:
+    context = {}
+
+    if request.method == 'GET':
         current_user = User.objects.get(id=request.user.id)
         account = Account.objects.get(user=current_user)
+        result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
+        # Recuperer les calories du jour (Meal)
+        day_food_calories = get_nutrition_calories_of_day(result_of_day)
+        # print(f"food of day {day_food_calories}")
 
-        # TODO Recup les calories du jour de Food, les calories du jour de Activity
-        day_food_calories = 1250 # TODO
-        day_activity_calories = 50 # TODO
-        # TODO Moyenne de calories journalieres des 15 derniers jours
-        average_calories = 50 # TODO
+        # Recuperer les calories du jour (Activity)
+        day_activity_calories = get_activity_calories_of_day(result_of_day)
+        # print(f"activity of day {day_activity_calories}")
+        
+        # Moyenne de calories journalieres des 15 derniers jours
+        average_calories = 0
+        day_count = 0
+        date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
+        last_15_results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
+        # print(f"last 15 {last_15_results}")
+        for result in last_15_results:
+            nutrition_calories = get_nutrition_calories_of_day(result)
+            # print(f"day {count} nutrition {nutrition_calories}")
+            average_calories += nutrition_calories
+            day_count += 1
+        if day_count != 0:
+            average_calories /= day_count
+        # print(f"average {average_calories}")
 
         context = {
             "goal_calories": account.goalCalories,
-            "day_food_calories": day_food_calories,
-            "day_activity_calories": day_activity_calories,
-            "average_calories": average_calories,
+            "day_food_calories": round(day_food_calories),
+            "day_activity_calories": round(day_activity_calories),
+            "average_calories": round(average_calories),
         }
-    except:
-        context = {}
+    
+    if request.method == 'POST':
+        # TODO Ajax query for chartjs update on homepage
+        pass
+
     return render(request, 'home.html', context)
 
 
@@ -165,9 +188,8 @@ def progress_ajax_view(request):
 
         try:
             # Recuperer les max 15 derniers poids enregistrees du compte
-            # date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
-            # results = Result.objects.filter(date=date_15days_back, owner=account).reverse()
             results = Result.objects.filter(owner=account)[:15]
+            print(results)
             dates = []
             weights = []
             for res in results:
@@ -178,11 +200,11 @@ def progress_ajax_view(request):
             response["dates"] = dates
             response["weights"] = weights
         except:
-            # Recuperer le dernier poids enregistrer, minimum le 1er a la creation du compte
-            result = Result.objects.filter(owner=account)[0]
-            response["dates"] = result.date
-            response["weights"] = result.weight
+            # Recuperer le 1er poids enregistre a la creation du compte
+            response["dates"] = [account.user.date_joined.date()]
+            response["weights"] = [account.weight]
 
+    print(response)
     return JsonResponse(response)
 
 

@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Account
+from .models import (
+    Account, Meal, Food, Activity,
+)
 from datetime import date
 
 
@@ -72,3 +74,31 @@ def create_account_using_form(form):
     )
     account.set_goal_calories()
     return account
+
+
+def get_nutrition_calories_of_day(result_of_day):
+    """"""
+    day_food_calories = 0
+    try:
+        all_meals_of_day = Meal.objects.filter(result=result_of_day)
+        if len(all_meals_of_day) != 0:
+            for meal_of_day in all_meals_of_day:
+                all_foods_of_day = Food.objects.filter(meal=meal_of_day)
+                for food_of_day in all_foods_of_day:
+                    day_food_calories += food_of_day.energy
+    except:
+        pass
+    return day_food_calories
+
+
+def get_activity_calories_of_day(result_of_day):
+    """"""
+    day_activity_calories = 0
+    try:
+        all_activities_of_day = Activity.objects.filter(result=result_of_day)
+        if len(all_activities_of_day) != 0:
+            for activity_of_day in all_activities_of_day:
+                day_activity_calories += activity_of_day.get_calories()
+    except:
+        pass
+    return day_activity_calories

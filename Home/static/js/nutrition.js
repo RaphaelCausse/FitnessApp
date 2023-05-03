@@ -129,16 +129,13 @@ function add_product() {
 
 var addButton = document.getElementById('add');
 var divSelect = document.getElementById('div_select');
-var isShown = false;
 
 addButton.addEventListener("click", function() {
-  if (isShown) {
+  if (divSelect.style.display == "block") {
     divSelect.style.display = "none";
-    isShown = false;
     window.scrollTo(0, 0);
 } else {
     divSelect.style.display = "block";
-    isShown = true;
     window.scrollTo(0, document.body.scrollHeight);
   }
 });
@@ -147,7 +144,7 @@ addButton.addEventListener("click", function() {
 var add = document.getElementById('cancel');
 add.addEventListener("click", (e) =>{
     document.getElementById("div_select").style.display="none";
-    isShown = false;
+    divSelect.style.display = "none"
 });
 
 //Affichage de la div d'ajout
@@ -158,7 +155,7 @@ add.addEventListener("click", (e) => {
     formData.append("category", "MEAL");
     formData.append("name", $('#search_bar').val());
     formData.append("quantity", $('#selected-product-quantity').val());
-    console.log(formData)
+    // console.log(formData)
     $.ajax({
         url: "add_product_to_user",
         type: 'POST',
