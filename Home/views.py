@@ -106,36 +106,38 @@ def home_view(request):
     if request.method == 'GET':
         current_user = User.objects.get(id=request.user.id)
         account = Account.objects.get(user=current_user)
-        result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
-        # Recuperer les calories du jour (Meal)
-        day_food_calories = get_nutrition_calories_of_day(result_of_day)
-        # print(f"food of day {day_food_calories}")
 
-        # Recuperer les calories du jour (Activity)
-        day_activity_calories = get_activity_calories_of_day(result_of_day)
-        # print(f"activity of day {day_activity_calories}")
-        
-        # Moyenne de calories journalieres des 15 derniers jours
-        average_calories = 0
-        day_count = 0
-        date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
-        last_15_results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
-        # print(f"last 15 {last_15_results}")
-        for result in last_15_results:
-            nutrition_calories = get_nutrition_calories_of_day(result)
-            # print(f"day {count} nutrition {nutrition_calories}")
-            average_calories += nutrition_calories
-            day_count += 1
-        if day_count != 0:
-            average_calories /= day_count
-        # print(f"average {average_calories}")
+        try:
+            result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
+            # Recuperer les calories du jour (Meal)
+            day_food_calories = get_nutrition_calories_of_day(result_of_day)
+            # Recuperer les calories du jour (Activity)
+            day_activity_calories = get_activity_calories_of_day(result_of_day)
+            # Moyenne de calories journalieres des 15 derniers jours
+            average_calories = 0
+            day_count = 0
+            date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
+            last_15_results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
+            for result in last_15_results:
+                nutrition_calories = get_nutrition_calories_of_day(result)
+                average_calories += nutrition_calories
+                day_count += 1
+            if day_count != 0:
+                average_calories /= day_count
 
-        context = {
-            "goal_calories": account.goalCalories,
-            "day_food_calories": round(day_food_calories),
-            "day_activity_calories": round(day_activity_calories),
-            "average_calories": round(average_calories),
-        }
+            context = {
+                "goal_calories": account.goalCalories,
+                "day_food_calories": round(day_food_calories),
+                "day_activity_calories": round(day_activity_calories),
+                "average_calories": round(average_calories),
+            }
+        except:
+            context = {
+                 "goal_calories": account.goalCalories,
+                "day_food_calories": 0,
+                "day_activity_calories": 0,
+                "average_calories": 0,
+            }
     
     if request.method == 'POST':
         # TODO Ajax query for chartjs update on homepage
@@ -164,11 +166,9 @@ def progress_add_view(request):
             result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
             result_of_day.weight = new_weight
             result_of_day.save()
-            print(result_of_day)
         except:
             # Creation d'un resultat du jour.
             new_result = Result.objects.create(weight=new_weight, owner=account)
-            print(new_result)
 
     return render(request, 'progress.html', context)
 
@@ -189,7 +189,6 @@ def progress_ajax_view(request):
         try:
             # Recuperer les max 15 derniers poids enregistrees du compte
             results = Result.objects.filter(owner=account)[:15]
-            print(results)
             dates = []
             weights = []
             for res in results:
@@ -352,7 +351,6 @@ def search_product(request):
 @csrf_exempt
 def add_product_to_db(request):
     if request.method == "POST":
-        print("add_product_to_db >> ", request)
         data = request.POST
         helpers.add_product_to_db(data)
         return JsonResponse({"success": "Product added"}, status=200, safe=False)
@@ -360,7 +358,6 @@ def add_product_to_db(request):
 
 @csrf_exempt
 def add_product_to_user(request):
-    print("add_product_to_user >> ", request)
     if request.method == "POST":
         data = request.POST
 
