@@ -184,13 +184,6 @@ def progress_ajax_view(request):
     return JsonResponse(response)
 
 
-@csrf_exempt
-@login_required(login_url='/login/')
-def progress_update_ajax_view(request):
-    """ User progress page. """
-    return render(request, 'progress.html')
-
-
 @login_required(login_url='/login/')
 def nutrition_view(request):
     """ User daily nutrition entries page. """

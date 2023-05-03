@@ -25,7 +25,7 @@ let formData = new FormData()
 //     console.log(result);
 // })
 
-new Chart(ctx, {
+let chart = new Chart(ctx, {
   type: 'bar',
   data: {
     labels: lastFifteenDays,

@@ -43,7 +43,7 @@ data: {
     label: 'Votre Poids (kg)',
     data: [],
     backgroundColor: [
-        'rgb(112, 44, 246,0.3)',
+        'rgb(112, 44, 246, 0.2)',
       ],
     borderColor: [
         'rgb(112, 44, 246,0.6)',
@@ -53,7 +53,7 @@ data: {
     label: 'Votre Objectif (kg)',
     data: [],
     backgroundColor: [
-        'rgb(242, 151, 0,0.)',
+        'rgb(242, 151, 0,0.2)',
       ],
     borderColor: [
         'rgb(242, 151, 0,0.6)',
@@ -88,7 +88,7 @@ var chart2 = new Chart(cv, {
       label: 'Votre IMC',
       data: [],
       backgroundColor: [
-          'rgb(112, 44, 246,0.3)',
+          'rgb(112, 44, 246,0.2)',
         ],
       borderColor: [
           'rgb(112, 44, 246,0.6)',
@@ -99,7 +99,7 @@ var chart2 = new Chart(cv, {
         label: "Surpoids",
         data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
         backgroundColor: [
-            'rgb(255, 0, 0, 0.1)',
+            'rgb(255, 0, 0, 0.2)',
           ],
         borderColor: [
             'rgb(255, 0, 0, 0.6)',
@@ -110,7 +110,7 @@ var chart2 = new Chart(cv, {
         label: "Insuffisance pondérale",
         data: [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18],
         backgroundColor: [
-            'rgb(0, 255, 0, 0.1)',
+            'rgb(0, 255, 0, 0.2)',
           ],
         borderColor: [
             'rgb(0, 255, 0, 0.6)',
@@ -161,7 +161,7 @@ fetch(request)
     chart2.data.labels = result.dates.map(str=>String(str))
     let imc_list = []
     for (let i = 0; i < result.dates.length; i++) {
-      imc_list.push(parseFloat(result.weights[i]) / parseFloat((result.height/100)*(result.height/100)))
+      imc_list.push((parseFloat(result.weights[i]) / parseFloat((result.height/100)*(result.height/100))).toFixed(1))
     }
     chart2.data.datasets[0].data = imc_list
     chart2.update()

@@ -10,7 +10,6 @@ urlpatterns = [
     path('progress/', views.progress_view, name='progress'),
     path('progress/add', views.progress_add_view, name='progress_add'),
     path('progress/ajax', views.progress_ajax_view, name='progress_ajax'),
-    path('progress/update_ajax', views.progress_update_ajax_view, name='progress_update_ajax'),
     path('nutrition/', views.nutrition_view, name='nutrition'),
     path('activity/', views.activity_view, name='activity'),
     path('training/', views.training_view, name='training'),
