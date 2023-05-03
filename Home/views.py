@@ -162,14 +162,17 @@ def progress_ajax_view(request):
         response["height"] = account.height
 
         try:
-            # Recuperer les derniers poids, max 15 derniers jours
-            date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
-            results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
+            # Recuperer les max 15 derniers poids enregistrees du compte
+            # date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
+            # results = Result.objects.filter(date=date_15days_back, owner=account).reverse()
+            results = Result.objects.filter(owner=account)[:15]
             dates = []
             weights = []
             for res in results:
                 dates.append(str(res.date))
                 weights.append(str(res.weight))
+            dates.reverse()
+            weights.reverse()
             response["dates"] = dates
             response["weights"] = weights
         except:
