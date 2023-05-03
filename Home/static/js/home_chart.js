@@ -61,6 +61,3 @@ fetch(request)
     chart.data.datasets[0].data = result.calories
     chart.update()
 })
-
-
-

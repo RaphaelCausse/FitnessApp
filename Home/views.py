@@ -223,7 +223,6 @@ def progress_ajax_view(request):
             response["dates"] = [account.user.date_joined.date()]
             response["weights"] = [account.weight]
 
-    print(response)
     return JsonResponse(response)
 
 

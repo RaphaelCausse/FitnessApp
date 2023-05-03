@@ -46,38 +46,33 @@ data: {
         'rgb(112, 44, 246, 0.2)',
       ],
     borderColor: [
-        'rgb(112, 44, 246,0.6)',
+        'rgb(112, 44, 246, 0.6)',
       ],
     tension: 0.1
     },{
     label: 'Votre Objectif (kg)',
     data: [],
     backgroundColor: [
-        'rgb(242, 151, 0,0.2)',
+        'rgb(242, 151, 0, 0)',
       ],
     borderColor: [
-        'rgb(242, 151, 0,0.6)',
+        'rgb(242, 151, 0, 0.6)',
       ],
     tension: 0.1   
-    }],
-    options: {
+    }]
+  },
+options: {
+      maintainAspectRatio: true,
       scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Poids (kg)'
-          }
-        }],
         yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Mois'
-          }
-        }]
-      }     
+          ticks: {
+            beginAtZero: true,
+            max: 150,
+          } 
+        }]   
+      }
     }
-    }
-});
+  });
 
 var cv = document.getElementById('imc');
 var chart2 = new Chart(cv, {
@@ -88,7 +83,7 @@ var chart2 = new Chart(cv, {
       label: 'Votre IMC',
       data: [],
       backgroundColor: [
-          'rgb(112, 44, 246,0.2)',
+          'rgb(112, 44, 246,0)',
         ],
       borderColor: [
           'rgb(112, 44, 246,0.6)',
@@ -99,7 +94,7 @@ var chart2 = new Chart(cv, {
         label: "Surpoids",
         data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
         backgroundColor: [
-            'rgb(255, 0, 0, 0.2)',
+            'rgb(255, 0, 0, 0)',
           ],
         borderColor: [
             'rgb(255, 0, 0, 0.6)',
@@ -110,31 +105,27 @@ var chart2 = new Chart(cv, {
         label: "Insuffisance pondérale",
         data: [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18],
         backgroundColor: [
-            'rgb(0, 255, 0, 0.2)',
+            'rgb(0, 255, 0, 0.1)',
           ],
         borderColor: [
             'rgb(0, 255, 0, 0.6)',
           ],
         tension: 0.1   
       }],
-      options: {
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Poids (kg)'
-            }
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Mois'
-            }
-          }]
-        }     
-      }
-      }
-  });
+  },
+  options: {
+    maintainAspectRatio: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 5,
+          max: 50,
+        } 
+      }]   
+    }
+  }
+});
 
 // Preparation de la requete ajax avec les donnees a recuperer du serveur, pour initialiser les valeurs des graphiques
 let formData = new FormData()
