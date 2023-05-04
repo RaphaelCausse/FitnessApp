@@ -54,7 +54,12 @@ class Account(models.Model):
         elif self.gender == "F":
             baseMetabolism -= 161.0
         activity = { 'ANO': 1.2, 'ALOW': 1.375, 'AMED': 1.55, 'AINT': 1.725, 'APRO': 1.9 }
-        self.goalCalories = round(baseMetabolism * activity.get(self.lifestyle, 1.2))
+        self.goalCalories = baseMetabolism * activity.get(self.lifestyle, 1.2)
+        if self.goalType == "G":
+            self.goalCalories = self.goalCalories * 1.15
+        elif self.goalType == "L":
+            self.goalCalories = self.goalCalories * 0.85
+        self.goalCalories = round(self.goalCalories)
 
 
 class Result(models.Model):

@@ -67,6 +67,7 @@ options: {
         yAxes: [{
           ticks: {
             beginAtZero: true,
+            stepSize: 15,
             max: 150,
           } 
         }]   
@@ -86,7 +87,7 @@ var chart2 = new Chart(cv, {
           'rgb(112, 44, 246,0)',
         ],
       borderColor: [
-          'rgb(112, 44, 246,0.6)',
+          'rgb(112, 44, 246, 0.6)',
         ],
       tension: 0.1
       },
@@ -129,7 +130,7 @@ var chart2 = new Chart(cv, {
 
 // Preparation de la requete ajax avec les donnees a recuperer du serveur, pour initialiser les valeurs des graphiques
 let formData = new FormData()
-formData.append("goal_weight", 0)
+formData.append("goal_weights", [])
 formData.append("height", 0)
 formData.append("dates", [])
 formData.append("weights", [])
@@ -140,12 +141,8 @@ fetch(request)
 .then(result => {
     // Chart des poids
     chart.data.labels = result.dates.map(str=>String(str))
-    chart.data.datasets[0].data = result.weights.map(i=>Number(i))
-    let goal_data = []
-    for (let i = 0; i < result.dates.length; i++) {
-      goal_data.push(parseInt(result.goal_weight))
-    }
-    chart.data.datasets[1].data = goal_data
+    chart.data.datasets[0].data = result.weights.map(i=> i != " " ? Number(i) : NaN)
+    chart.data.datasets[1].data = result.goal_weights.map(i=> Number(i))
     chart.update()
 
     // chart des imc

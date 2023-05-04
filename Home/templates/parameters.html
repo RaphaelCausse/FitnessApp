@@ -16,25 +16,47 @@
 {% block main %}
 <div class="card shadow border-start-primary py-2">
     <div class="card-body px-3">
-        <h1>Parametres</h1>
-        <span>TODO: Pouvoir éditer son profil avec un formulaire.</span>
+        <h1 class="px-3">Parametres</h1>
     </div>
 </div>
 
 <div class="card shadow border-start-primary py-2 mt-3">
-    <div class="card-body px-3">
-        <p>Request.user : {{ request.user }}</p>
+    <div class="card-body px-5">
         <p>Nom d'utilisateur : {{ account.user }}</p>
-        <p>Prénom : {{ account.user.first_name }}</p>
-        <p>Nom : {{ account.user.last_name }}</p>
         <p>Email : {{ account.user.email }}</p>
         <p>Date de naissance : {{ account.birthdate }}</p>
         <p>Age : {{ age }}</p>
-        <p>Genre : {{ account.gender }}</p>
+        <p>Genre : 
+            {% if account.gender == "M" %}
+                Homme
+            {% elif account.gender == "F" %}
+                Femme
+            {% endif %}
+        </p>
         <p>Poids : {{ account.weight }}</p>
         <p>Taille : {{ account.height }}</p>
-        <p>Niveau d'activité : {{ account.lifestyle }}</p>
-        <p>Objectif : {{ account.goalType }}</p>
+        <p>Niveau d'activité : 
+            {% if account.lifestyle == "ANO" %}
+                Aucune activité
+            {% elif account.lifestyle == "ALOW" %}
+                Peu actif
+            {% elif account.lifestyle == "AMED" %}
+                Moyennement actif
+            {% elif account.lifestyle == "AINT" %}
+                Très actif
+            {% elif account.lifestyle == "APRO" %}
+                Professionnel
+            {% endif %}
+        </p>
+        <p>Objectif : 
+            {% if account.goalType == "G" %}
+                Prendre du muscle
+            {% elif account.goalType == "M" %}
+                Maintenir son poids
+            {% elif account.goalType == "L" %}
+                Perdre du poids
+            {% endif %}
+        </p>
         <p>Objectif de poids : {{ account.goalWeight }}</p>
         <p>Objectif de calories par jour: {{ account.goalCalories }}</p>
     </div>

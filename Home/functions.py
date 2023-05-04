@@ -23,7 +23,7 @@ def get_signup_form_fields(request):
     goal_weight = request.POST.get('goal_weight', None)
 
     form = {
-        "firstname": firstname,
+        "firstname": firstname.split(',')[0][1:],
         "lastname": lastname,
         "birthdate": birthdate,
         "gender": gender,

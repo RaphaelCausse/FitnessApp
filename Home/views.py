@@ -186,9 +186,19 @@ def progress_add_view(request):
             result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
             result_of_day.weight = new_weight
             result_of_day.save()
+            if new_weight >= account.goalWeight:
+                account.goalType = "L"
+            else:
+                account.goalType = "W"
+            account.weight = new_weight
+            account.set_goal_calories()
+            account.save()
         except:
             # Creation d'un resultat du jour.
             new_result = Result.objects.create(weight=new_weight, owner=account)
+            account.weight = new_weight
+            account.set_goal_calories()
+            account.save()
 
     return render(request, 'progress.html', context)
 
@@ -203,25 +213,32 @@ def progress_ajax_view(request):
         current_user = User.objects.get(id=request.user.id)
         account = Account.objects.get(user=current_user)
         response = request.POST.copy()
-        response["goal_weight"] = account.goalWeight
+        response["goal_weights"] = [account.goalWeight for i in range(0, 15)]
         response["height"] = account.height
 
-        try:
-            # Recuperer les max 15 derniers poids enregistrees du compte
-            results = Result.objects.filter(owner=account)[:15]
-            dates = []
-            weights = []
+        # Recuperer les max 15 derniers poids enregistrees du compte
+        results = Result.objects.filter(owner=account)[:15]
+        dates = []
+        weights = []
+        # Si pas d'enregistrement, prendre le poids à la creation du compte
+        if len(results) == 0:
+            for i in range(0, 14):
+                dates.append(" ")
+                weights.append(" ")
+            dates.append(str(current_user.date_joined.date()))
+            weights.append(str(account.weight))
+        # Prendre les enregistrements
+        else:
+            for i in range(0, 15-len(results)):
+                dates.append(" ")
+                weights.append(" ")
             for res in results:
                 dates.append(str(res.date))
                 weights.append(str(res.weight))
-            dates.reverse()
-            weights.reverse()
-            response["dates"] = dates
-            response["weights"] = weights
-        except:
-            # Recuperer le 1er poids enregistre a la creation du compte
-            response["dates"] = [account.user.date_joined.date()]
-            response["weights"] = [account.weight]
+        dates.reverse()
+        weights.reverse()
+        response["dates"] = dates
+        response["weights"] = weights
 
     return JsonResponse(response)
 
