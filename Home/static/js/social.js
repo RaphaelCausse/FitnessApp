@@ -63,9 +63,6 @@ function ajax_likes(div) {
     const request = new Request('/social/update/', {method: 'POST', body: formData})
     fetch(request)
     .then(response => response.json())
-    .then(result => {
-        console.log(result);
-    })
 }
 
 function ajax_dislikes(div) {
@@ -114,9 +111,6 @@ function ajax_dislikes(div) {
     const request = new Request('/social/update/', {method: 'POST', body: formData})
     fetch(request)
     .then(response => response.json())
-    .then(result => {
-        console.log(result);
-    })
 }      
 
 // Fonctions du formulaire d'ajout de post

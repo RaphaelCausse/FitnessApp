@@ -14,13 +14,14 @@
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <script src="{% static 'js/form_validation.js' %}" defer></script>
+<script src="{% static 'js/progression.js' %}" defer></script>
 {% endblock script %}
 
 {% block main %}
 <div class="card shadow border-start-primary py-2">
     <div class="card-body">
-        <h1>Progression</h1>
-        <p class="pt-3 px-3">Suivez votre progression vers l'objectif que vous vous etes donné !</p>
+        <h1 class="px-3">Progression</h1>
+        <p class="px-3 m-0">Suivez votre progression vers l'objectif que vous vous etes donné !</p>
     </div>
 </div>
 
@@ -57,15 +58,14 @@
 <div class="card shadow border-start-primary py-2 mt-3">
     <div class="card-body" >
         <h4>Evolution de votre poids</h4>
-        <canvas id="canvas" style="max-height:450px;"></canvas>
+        <canvas id="canvas" style="max-height:450px;" class="px-3"></canvas>
     </div>
 </div>
 
 <div class="card shadow border-start-primary py-2 mt-3">
     <div class="card-body">
         <h4>Evolution de votre IMC</h4>
-        <canvas id="imc" style="max-height:450px;"></canvas>
-        <script src="../static/js/progression.js"></script>
+        <canvas id="imc" style="max-height:450px;" class="px-3"></canvas>
     </div>
 </div>
 

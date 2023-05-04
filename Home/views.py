@@ -10,10 +10,11 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import (
-    Result, Account, SocialPost, LikedPost, DislikedPost, Meal, Food,
+    Result, Account, Activity, SocialPost, LikedPost, DislikedPost, Meal, Food,
 )
 from Home.functions import (
     get_signup_form_fields, check_form_fields, create_account_using_form,
+    get_nutrition_calories_of_day, get_activity_calories_of_day,
 )
 import datetime as dt
 from . import helpers
@@ -102,29 +103,73 @@ def home_view(request):
     """ User home page. """
     context = {}
 
-    current_user = User.objects.get(id=request.user.id)
-    account = Account.objects.get(user=current_user)
+    if request.method == 'GET':
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
 
-    # TODO Recup les calories du jour de Food, les calories du jour de Activity
-    day_food_calories = 1250  # TODO
-    day_activity_calories = 50  # TODO
-    # TODO Moyenne de calories journalieres des 15 derniers jours
-    average_calories = 50  # TODO
+        try:
+            result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
+            # Recuperer les calories du jour (Meal)
+            day_food_calories = get_nutrition_calories_of_day(result_of_day)
+            # Recuperer les calories du jour (Activity)
+            day_activity_calories = get_activity_calories_of_day(result_of_day)
+            # Moyenne de calories journalieres des 15 derniers jours
+            average_calories = 0
+            day_count = 0
+            date_15days_back = (dt.datetime.today() - dt.timedelta(days=15)).strftime("%Y-%m-%d")
+            last_15_results = Result.objects.filter(date__gte=date_15days_back, owner=account).reverse()
+            for result in last_15_results:
+                nutrition_calories = get_nutrition_calories_of_day(result)
+                average_calories += nutrition_calories
+                day_count += 1
+            if day_count != 0:
+                average_calories /= day_count
 
-    context = {
-        "goal_calories": account.goalCalories,
-        "day_food_calories": day_food_calories,
-        "day_activity_calories": day_activity_calories,
-        "average_calories": average_calories,
-    }
+            context = {
+                "goal_calories": account.goalCalories,
+                "day_food_calories": round(day_food_calories),
+                "day_activity_calories": round(day_activity_calories),
+                "average_calories": round(average_calories),
+            }
+        except:
+            context = {
+                "goal_calories": account.goalCalories,
+                "day_food_calories": 0,
+                "day_activity_calories": 0,
+                "average_calories": 0,
+            }
+    
     return render(request, 'home.html', context)
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def home_ajax_view(request):
+    if request.method == 'POST':
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        response = request.POST.copy()
+        dates = []
+        calories = []
+        for i in range (0, 15):
+            dates.append((dt.datetime.today() - dt.timedelta(days=i)).strftime("%d/%m"))
+            try:
+                result = Result.objects.get(date=(dt.datetime.today() - dt.timedelta(days=i)).strftime("%Y-%m-%d"), owner=account)
+                calories.append(get_nutrition_calories_of_day(result))
+            except:
+                calories.append(0)
+        dates.reverse()
+        calories.reverse()        
+        response["dates"] = dates
+        response["calories"] = calories
+
+        return JsonResponse(response)
 
 
 @login_required(login_url='/login/')
 def progress_view(request):
     """ User progress page. """
-    context = {}
-    return render(request, 'progress.html', context)
+    return render(request, 'progress.html')
 
 
 @login_required(login_url='/login/')
@@ -141,13 +186,61 @@ def progress_add_view(request):
             result_of_day = Result.objects.get(date=dt.date.today(), owner=account)
             result_of_day.weight = new_weight
             result_of_day.save()
-            print(result_of_day)
+            if new_weight >= account.goalWeight:
+                account.goalType = "L"
+            else:
+                account.goalType = "W"
+            account.weight = new_weight
+            account.set_goal_calories()
+            account.save()
         except:
             # Creation d'un resultat du jour.
             new_result = Result.objects.create(weight=new_weight, owner=account)
-            print(new_result)
+            account.weight = new_weight
+            account.set_goal_calories()
+            account.save()
 
     return render(request, 'progress.html', context)
+
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def progress_ajax_view(request):
+    """ User progress page. """
+    response = {}
+    
+    if request.method == 'POST':
+        current_user = User.objects.get(id=request.user.id)
+        account = Account.objects.get(user=current_user)
+        response = request.POST.copy()
+        response["goal_weights"] = [account.goalWeight for i in range(0, 15)]
+        response["height"] = account.height
+
+        # Recuperer les max 15 derniers poids enregistrees du compte
+        results = Result.objects.filter(owner=account)[:15]
+        dates = []
+        weights = []
+        # Si pas d'enregistrement, prendre le poids à la creation du compte
+        if len(results) == 0:
+            for i in range(0, 14):
+                dates.append(" ")
+                weights.append(" ")
+            dates.append(str(current_user.date_joined.date()))
+            weights.append(str(account.weight))
+        # Prendre les enregistrements
+        else:
+            for i in range(0, 15-len(results)):
+                dates.append(" ")
+                weights.append(" ")
+            for res in results:
+                dates.append(str(res.date))
+                weights.append(str(res.weight))
+        dates.reverse()
+        weights.reverse()
+        response["dates"] = dates
+        response["weights"] = weights
+
+    return JsonResponse(response)
 
 
 @login_required(login_url='/login/')
@@ -310,7 +403,13 @@ def add_product_to_db(request):
 def add_product_to_user(request):
     if request.method == "POST":
         data = request.POST
+
+        # TODO Add a user_id field in the request from JS ajax
+        # get user id like this example : request.POST['user_id'] 
+        # => get User 
         user = User.objects.get(id=request.user.id)
+        # END TODO
+
         helpers.add_product_to_user(user, data)
         context = helpers.get_calories_of_the_day(request)
         return JsonResponse(context, status=200, safe=False)
