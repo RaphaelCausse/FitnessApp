@@ -106,10 +106,10 @@ def home_view(request):
     account = Account.objects.get(user=current_user)
 
     # TODO Recup les calories du jour de Food, les calories du jour de Activity
-    day_food_calories = 1250 # TODO
-    day_activity_calories = 50 # TODO
+    day_food_calories = 1250  # TODO
+    day_activity_calories = 50  # TODO
     # TODO Moyenne de calories journalieres des 15 derniers jours
-    average_calories = 50 # TODO
+    average_calories = 50  # TODO
 
     context = {
         "goal_calories": account.goalCalories,
@@ -158,10 +158,13 @@ def nutrition_view(request):
     context.update({"calories_goal": account.goalCalories})
     return render(request, 'nutrition.html', context)
 
+
 @login_required(login_url='/login/')
 def activity_view(request):
     """ User daily activity entries page. """
-    return render(request, 'activity.html')
+    user = User.objects.get(id=request.user.id)
+    context = helpers.get_activities_of_the_week(user)
+    return render(request, 'activity.html', context)
 
 
 @login_required(login_url='/login/')
@@ -214,7 +217,7 @@ def social_update_ajax_view(request):
         # Faire les modifications sur la base de donnees
         likes = ajax_request.get("likes")
         dislikes = ajax_request.get("dislikes")
-        
+
         # Si le post a ete like, ajout a la table LikedPost
         if likes > socialPost.likes:
             socialPost.likes += 1
@@ -230,7 +233,7 @@ def social_update_ajax_view(request):
             to_rem = LikedPost.objects.get(liker=account, post=socialPost)
             to_rem.delete()
             socialPost.save()
-        
+
         # Si le post a ete dislike, ajout a la table DislikedPost
         if dislikes > socialPost.dislikes:
             socialPost.dislikes += 1
@@ -246,7 +249,7 @@ def social_update_ajax_view(request):
             to_rem = DislikedPost.objects.get(disliker=account, post=socialPost)
             to_rem.delete()
             socialPost.save()
-        
+
     return JsonResponse(response)
 
 
@@ -274,6 +277,7 @@ def parameters_view(request):
         context = {"account": account, "age": age}
     return render(request, 'parameters.html', context)
 
+
 @csrf_exempt
 def autocomplete(request):
     if request.method == "POST":
@@ -281,6 +285,7 @@ def autocomplete(request):
         products = helpers.autocomplete_products(pattern)
         return JsonResponse({"products": products}, status=200, safe=False)
     return JsonResponse({"error": ""}, status=400, safe=False)
+
 
 @csrf_exempt
 def search_product(request):
@@ -291,6 +296,7 @@ def search_product(request):
         return JsonResponse(product_data, status=200, safe=False)
     return JsonResponse({"error": ""}, status=400, safe=False)
 
+
 @csrf_exempt
 def add_product_to_db(request):
     if request.method == "POST":
@@ -299,12 +305,24 @@ def add_product_to_db(request):
         return JsonResponse({"success": "Product added"}, status=200, safe=False)
     return JsonResponse({"error": ""}, status=400, safe=False)
 
+
 @csrf_exempt
 def add_product_to_user(request):
     if request.method == "POST":
         data = request.POST
         user = User.objects.get(id=request.user.id)
         helpers.add_product_to_user(user, data)
-        calories_of_the_day = list(helpers.get_calories_of_the_day(request).values())
-        return JsonResponse({"calories": calories_of_the_day}, status=200, safe=False)
+        context = helpers.get_calories_of_the_day(request)
+        return JsonResponse(context, status=200, safe=False)
+    return JsonResponse({"error": ""}, status=400, safe=False)
+
+
+@csrf_exempt
+def add_activity_to_user(request):
+    if request.method == "POST":
+        data = request.POST
+        user = User.objects.get(id=request.user.id)
+        helpers.add_activity_to_user(user, data)
+        context = helpers.get_activities_of_the_week(user)
+        return JsonResponse(context, status=200, safe=False)
     return JsonResponse({"error": ""}, status=400, safe=False)

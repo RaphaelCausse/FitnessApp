@@ -30,19 +30,12 @@
         <div class="container text-center mb-2">
             <div class="">
                 <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
-                <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
             </div>
         </div>
         <div class="w-75 mt-5 mx-auto text-center justify-content-center">
             <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
-            <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
+            <div id="calories_per_period" style="display: none"> {{ calories_per_period }}</div>
             <div class="chart-area mt-5 justify-content-center w-100 h-100 ">
-                <i id="calories-breakfast" style="display: none;">{{ breakfast }}</i>
-                <i id="calories-morning-snack" style="display: none;">{{ morning_snack }}</i>
-                <i id="calories-lunch" style="display: none;">{{ lunch }}</i>
-                <i id="calories-snack" style="display: none;">{{ snack }}</i>
-                <i id="calories-dinner" style="display: none;">{{ dinner }}</i>
-                <i id="calories-to-consume" style="display: none;">{{ calories_to_consume }}</i>
                 <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             </div>
@@ -71,8 +64,9 @@
                         <div class="d-flex my-1 ms-3 justify-content-center align-items-center" id="box2">
                             <label for="type" class="my-2 ms-2 me-2 p-1"> Catégorie : </label>
                             <select name="type" class="form-select m-1 w-50" id="selected-product-category" aria-placeholder="Selectionner un type de repas"><!--voir comment mettre un texte de base-->
-                                <option value="">Plat</option>
-                                <option value="">Ingrédient</option>
+                                <option value="INGR">Ingredient</option>
+                                <option value="MEAL">Plat</option>
+
                             </select>
                         </div>
                         <div class="mt-3" id="select">

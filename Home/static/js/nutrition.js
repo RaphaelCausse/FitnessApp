@@ -8,7 +8,6 @@ $(document).ready(() => {
     const product_list = $('#product_list');
     const search_product = $('#search-product');
     const selected_product_quantity = $('#selected-product-quantity');
-    const selected_product_quantity = $('#selected-product-quantity');
     
     selected_product_quantity.hide();
     search_product.hide()
@@ -154,7 +153,7 @@ var add = document.getElementById('save');
 add.addEventListener("click", (e) => {
     let formData = new FormData();
     formData.append("period", $('#selected-product-period').val());
-    formData.append("category", "MEAL");
+    formData.append("category", $("#selected-product-category").val());
     formData.append("name", $('#search_bar').val());
     formData.append("quantity", $('#selected-product-quantity').val());
     console.log(formData)
@@ -165,11 +164,11 @@ add.addEventListener("click", (e) => {
         contentType: false,
         data: formData,
         success: (data) => {
-            $("#consumed-calories").textContent = data["calories"].pop();
-            nex_chart.data.datasets[0].data = data["calories"].map(String);
+            $("#consumed-calories").textContent = data["consumed_calories"];
+            nex_chart.data.datasets[0].data = data["calories_per_period"];
             $('html, body').animate({ scrollTop: 0 }, 'slow');
             setTimeout(() => {nex_chart.update()}, 750);
-            $("#div_select").hide()
+            $("#div_select").slideUp()
             $("#search_bar").val("")
             $('#selected-product-quantity').val("");
             $('#selected-product-quantity').hide();
@@ -187,18 +186,13 @@ const myChart = document.getElementById("my_chart");
 
 const color = ['rgb( 255, 105, 180)', 'rgb( 255, 215, 0)', 'rgb( 144, 238, 144)', 'rgb(100, 149, 237)', 'rgb(255, 127, 80)', 'rgb(230, 233, 236)']
 
+
+const calories_per_period = JSON.parse(document.getElementById("calories_per_period").textContent);
 const chartData = {
     labels : ["Petit-déjeuner", "Collation matinale", "Déjeuner", "Goûter", "Diner", "A consommer"],
     datasets : [{
         label: '% des calories de la journée',
-        data : [
-            parseFloat($("#calories-breakfast").text()),
-            parseFloat($("#calories-morning-snack").text()),
-            parseFloat($("#calories-lunch").text()),
-            parseFloat($("#calories-snack").text()),
-            parseFloat($("#calories-dinner").text()),
-            parseFloat($("#calories-to-consume").text())
-        ],
+        data : calories_per_period,
         backgroundColor:[
             color[0],
             color[1],
@@ -210,7 +204,7 @@ const chartData = {
         borderColor : [
             'rgb(255, 255, 255)'
         ]
-    }]
+    }],
 };
 
 const config = {
@@ -225,12 +219,18 @@ const config = {
                     }
                 }
             }
-        }
+        },
     },
-    //plugins : [counter]
 };
 
 const nex_chart = new Chart(
     myChart,
     config
 );
+
+$("#selected-product-quantity").on("input", () => {
+    const element = $("#selected-product-quantity");
+    if (parseInt(element.val()) > 300) {
+        element.val(300);
+    }
+});
