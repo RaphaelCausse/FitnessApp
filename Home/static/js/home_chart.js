@@ -56,7 +56,7 @@ const request = new Request('/home/ajax', {method: 'POST', body: formData})
 fetch(request)
 .then(response => response.json())
 .then(result => {
-    // Chart des poids
+    // Chart des calories
     chart.data.labels = result.dates
     chart.data.datasets[0].data = result.calories
     chart.update()

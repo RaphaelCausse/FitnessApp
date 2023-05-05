@@ -21,26 +21,21 @@
 {% endblock script %}
 
 {% block main %}
-<!-- Box, a encapsuler pour tous les items -->
 <div class="card shadow border-start-primary py-2">
     <div class="card-body">
-        <div class="container text-center p-1">
-            <div><h1 class="p-2">Activités</h1>Veuillez indiquer les activités sportives que vous avez pratiquées aujourd'hui.</div>
-        </div>
-        <div class="container text-center mb-2">
-            <div class="">
-                <p>Calories à bruler par jour : <i>{{ calories_goal }}</i></p>
-            </div>
-        </div>
-        <div class="w-75 mt-4 mx-auto text-center justify-content-center">
-            <p>Vos calories brulées journalières : <i id="daily_calories_consumed">{{ daily_calories_consumed }} </i></p>
-            <div id="context-data" style="display: none">{{ context_data }}</div>
-            <div class="chart-area mt-4 justify-content-center w-100 h-100 ">
-                <!--<canvas id="my_chart" class="d-block" width="150px" height="80px"></canvas>-->
-                <!-- max-width: 400px; -->
-                <canvas id="my_chart" class="mx-auto w-75 h-100" style="min-width: 190px; min-height: 190px;"></canvas>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            </div>
+        <h1 class="px-3">Activités</h1>
+        <p class="px-3 m-0">Veuillez indiquer les activités sportives que vous avez pratiquées aujourd'hui.</p>
+    </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+
+    <div class="w-75 mt-2 mx-auto text-center justify-content-center">
+        <p>Vos calories brulées journalières : <b><span id="daily_calories_consumed">{{ daily_calories_consumed }}</span></b></p>
+        <div id="context-data" style="display: none">{{ context_data }}</div>
+        <div class="chart-area mt-4 justify-content-center w-100 h-100 ">
+            <canvas id="my_chart" class="mx-auto w-75 h-100" style="min-width: 190px; min-height: 190px;"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
     </div>
 </div>
@@ -49,7 +44,7 @@
     <div class="card-body">
         <div class="row text-center mt-2">
             <div class="text-center mb-4 justify-content-center align-items-center d-flex flex-column">
-                <h3 class="p-5"><u>Sport</u></h3>
+                <h3 class="py-2"><u>Sport</u></h3>
                 <button type="button" class="row btn btn-outline-secondary w-50" id="add"><i class="bi bi-plus-lg icon_add"></i> Ajouter une activité</button>
                 <div class="row rounded-5 m-4 mt-4 w-75" id="div_select">
                     <form class="form-group" autocomplete="off">

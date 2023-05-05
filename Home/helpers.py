@@ -13,7 +13,7 @@ def get_calories_of_the_day(request):
     try:
         result = Result.objects.get(owner=account, date=dt.date.today())
     except Result.DoesNotExist:
-        result = Result.objects.create(owner=account, date=dt.date.today())
+        result = Result.objects.create(owner=account, date=dt.date.today(), weight=account.weight)
         result.save()
 
     goalCalories = account.goalCalories

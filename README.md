@@ -14,7 +14,11 @@ https://www.python.org/downloads/
 
 ## INSTALLATION
 
-Open a termial and move to the project folder, where is located the file `requirements.txt`.
+Open a termial and move to the root of project folder, where is located the file `requirements.txt`.
+
+```
+cd <your_path_to_project_folder>
+```
 
 Install all needed python packages by running this command :
 
@@ -24,7 +28,11 @@ pip install -r requirements.txt
 
 ## EXECUTION
 
-Open a termial, move to the project folder, where is located the file `manage.py`.
+Open a termial, move to the root of project folder, where is located the file `manage.py`.
+
+```
+cd <your_path_to_project_folder>
+```
 
 Launch the server (default port is 8000) :
 

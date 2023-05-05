@@ -21,21 +21,24 @@
 {% block main %}
 <div class="card shadow border-start-primary py-2">
     <div class="card-body">
-        <div class="container text-center p-1">
-            <div><h1 class="p-2">Nutrition</h1>Veuillez indiquer les aliments (plats et/ou ingrédients) que vous avez consommés aujourd'hui.</div>
-        </div>
-        <div class="container text-center mb-2">
-            <div class="">
-                <p>Calories à consommés par jour : <i>{{ calories_goal }}</i></p>
-            </div>
-        </div>
-        <div class="w-75 mt-5 mx-auto text-center justify-content-center">
-            <p>Votre consommation actuelle : <i id="consumed-calories">{{ consumed_calories }}</i></p>
-            <div id="calories_per_period" style="display: none"> {{ calories_per_period }}</div>
-            <div class="chart-area mt-5 justify-content-center w-100 h-100 ">
-                <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            </div>
+        <h1 class="px-3">Nutrition</h1>
+        <p class="px-3 m-0">Veuillez indiquer les aliments (plats et/ou ingrédients) que vous avez consommés aujourd'hui.</p>
+    </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+
+    <div id="user_id" hidden>{{ request.user.id }}</div>
+
+    <div class="container text-center">
+        <p class="px-3 mb-0 mt-2">Calories à consommés par jour : <b>{{ calories_goal }}</b></p>
+    </div>
+    <div class="w-75 my-2 mx-auto text-center justify-content-center">
+        <p>Votre consommation actuelle : <b><span id="consumed-calories">{{ consumed_calories }}</span></b></p>
+        <div id="calories_per_period" style="display: none"> {{ calories_per_period }}</div>
+        <div class="chart-area mt-3 justify-content-center w-100 h-100 ">
+            <canvas id="my_chart" class="mx-auto w-75 h-75" style="min-width: 190px; min-height: 190px; max-width: 400px;"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
     </div>
 </div>
@@ -63,7 +66,6 @@
                             <select name="type" class="form-select m-1 w-50" id="selected-product-category" aria-placeholder="Selectionner un type de repas"><!--voir comment mettre un texte de base-->
                                 <option value="INGR">Ingredient</option>
                                 <option value="MEAL">Plat</option>
-
                             </select>
                         </div>
                         <div class="mt-3" id="select">
@@ -84,7 +86,7 @@
                                         <div> {{ name }} </div>
                                     </div>
                                     <div class="product-nutrients d-grid align-items-center">
-                                        <div class="product-energy mb-1 me-1 p-1 rounded">E - {{ energy }}cal</div>
+                                        <div class="product-energy mb-1 me-1 p-1 rounded">E - {{ energy }}kcal</div>
                                         <div class="product-lipid mb-1 p-1 rounded">L - {{ lipid }}g</div>
                                         <div class="product-carbohydrate me-1 p-1 rounded">G - {{ carbohydrate }}g</div>
                                         <div class="product-protein p-1 rounded">P - {{ protein }}g</div>

@@ -310,7 +310,7 @@ def social_update_ajax_view(request):
         # Faire les modifications sur la base de donnees
         likes = ajax_request.get("likes")
         dislikes = ajax_request.get("dislikes")
-
+        
         # Si le post a ete like, ajout a la table LikedPost
         if likes > socialPost.likes:
             socialPost.likes += 1
@@ -326,7 +326,7 @@ def social_update_ajax_view(request):
             to_rem = LikedPost.objects.get(liker=account, post=socialPost)
             to_rem.delete()
             socialPost.save()
-
+        
         # Si le post a ete dislike, ajout a la table DislikedPost
         if dislikes > socialPost.dislikes:
             socialPost.dislikes += 1
@@ -342,7 +342,7 @@ def social_update_ajax_view(request):
             to_rem = DislikedPost.objects.get(disliker=account, post=socialPost)
             to_rem.delete()
             socialPost.save()
-
+        
     return JsonResponse(response)
 
 
@@ -403,13 +403,7 @@ def add_product_to_db(request):
 def add_product_to_user(request):
     if request.method == "POST":
         data = request.POST
-
-        # TODO Add a user_id field in the request from JS ajax
-        # get user id like this example : request.POST['user_id'] 
-        # => get User 
         user = User.objects.get(id=request.user.id)
-        # END TODO
-
         helpers.add_product_to_user(user, data)
         context = helpers.get_calories_of_the_day(request)
         return JsonResponse(context, status=200, safe=False)

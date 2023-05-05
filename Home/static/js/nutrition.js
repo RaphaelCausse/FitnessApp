@@ -133,10 +133,10 @@ var divSelect = document.getElementById('div_select');
 addButton.addEventListener("click", function() {
   if (divSelect.style.display == "block") {
     divSelect.style.display = "none";
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 100);
 } else {
     divSelect.style.display = "block";
-    window.scrollTo(0, document.body.scrollHeight);
+    window.scrollTo(0, document.body.scrollHeight-600);
   }
 });
 
@@ -163,7 +163,7 @@ add.addEventListener("click", (e) => {
         contentType: false,
         data: formData,
         success: (data) => {
-            $("#consumed-calories").textContent = data["consumed_calories"];
+            $("#consumed-calories").text(data["consumed_calories"])
             nex_chart.data.datasets[0].data = data["calories_per_period"];
             $('html, body').animate({ scrollTop: 0 }, 'slow');
             setTimeout(() => {nex_chart.update()}, 750);

@@ -8,7 +8,6 @@ from datetime import timedelta, date
 
 class Account(models.Model):
     """ User's account. """
-
     class Gender(models.TextChoices):
         MALE = 'M'
         FEMALE = 'F'
@@ -27,7 +26,7 @@ class Account(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[MinValueValidator(
-        timezone.now().date() - timedelta(days=365 * 100))])
+        timezone.now().date() - timedelta(days=365*100))])
     gender = models.CharField(max_length=1, choices=Gender.choices)
     weight = models.FloatField(validators=[MinValueValidator(20.0)])
     height = models.FloatField(validators=[MinValueValidator(20.0)])
@@ -45,11 +44,11 @@ class Account(models.Model):
         today = date.today()
         age = today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         return age
-
+    
     def set_goal_calories(self):
         """ Compute and set goal calories value for account profile. """
         age = self.get_age()
-        baseMetabolism = (10 * float(self.weight)) + (6.25 * float(self.height)) - (5 * float(age))
+        baseMetabolism = (10*float(self.weight)) + (6.25*float(self.height)) - (5*float(age))
         if self.gender == "M":
             baseMetabolism += 5.0
         elif self.gender == "F":
@@ -65,7 +64,6 @@ class Account(models.Model):
 
 class Result(models.Model):
     """ User's daily results. """
-
     class Meta:
         ordering = ['-date']
 
@@ -79,11 +77,10 @@ class Result(models.Model):
     def __str__(self):
         """ Used for admin panel visibility. """
         return f"{self.date} of {self.owner}"
-
+    
 
 class Activity(models.Model):
     """ Activity data. """
-
     class ActivityType(models.TextChoices):
         # https://evofitness.de/en/magazine/training/welche-sportart-verbrennt-am-meisten-kalorien-wir-l%C3%B6sen-auf
         YOGA = 'YOGA', _('Yoga')
@@ -120,14 +117,13 @@ class Meal(models.Model):
         LUNCH = 'LNCH', _('Lunch')
         SNACK = 'SNCK', _('Snack')
         DINNER = 'DNNR', _('Dinner')
-
+    
     mealType = models.CharField(max_length=4, choices=MealType.choices)
     result = models.ForeignKey(Result, on_delete=models.CASCADE, null=True)
 
 
 class Food(models.Model):
     """ Food data. """
-
     class FoodLabel(models.TextChoices):
         MEAL = 'MEAL', _('Meal')
         INGR = 'INGR', _('Ingredient')
@@ -150,7 +146,6 @@ class Food(models.Model):
 
 class SocialPost(models.Model):
     """ Social posts. """
-
     class Meta:
         ordering = ['-created']
 
@@ -163,7 +158,7 @@ class SocialPost(models.Model):
     def __str__(self) -> str:
         """ Used for admin panel visibility. """
         return f"{self.created} from {self.author.user.username}"
-
+    
 
 class LikedPost(models.Model):
     """ Posts liked. """
@@ -173,7 +168,6 @@ class LikedPost(models.Model):
     def __str__(self) -> str:
         """ Used for admin panel visibility. """
         return f"{self.liker} liked {self.post.pk}"
-
 
 class DislikedPost(models.Model):
     """ Posts disliked. """

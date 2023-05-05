@@ -121,7 +121,7 @@ save.addEventListener("click", (e) => {
         contentType: false,
         data: formData,
         success: (data) => {
-			$("#daily_calories_consumed").val(data["daily_calories_consumed"])
+			$("#daily_calories_consumed").text(data["daily_calories_consumed"])
 			nex_chart.data = update_chartjs_data(JSON.parse(data["context_data"]))
 			$('html, body').animate({ scrollTop: 0 }, 'slow');
             setTimeout(() => {nex_chart.update()}, 750);
