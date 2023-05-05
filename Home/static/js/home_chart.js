@@ -1,16 +1,5 @@
 
 const ctx = document.getElementById('ptichart');
-const today = new Date(); // Obtient la date actuelle
-const lastFifteenDays = []; // Initialise un tableau vide
-
-// Boucle pour ajouter les dates des 15 derniers jours dans le tableau
-for (let i = 1; i <= 15; i++) {
-  const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i); // Obtient la date du jour précédent
-  const day = date.getDate().toString().padStart(2, '0'); // Obtient le jour du mois en deux chiffres
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Obtient le mois en deux chiffres
-  const formattedDate = `${day}/${month}`; // Combine le jour et le mois dans une chaîne de caractères au format "jj/mm"
-  lastFifteenDays.push(formattedDate); // Ajoute la date formatée dans le tableau
-}
 
 // TODO Recup les calories sur les 15 derniers jours, depuis Activity et Food, avec requete ajax
 

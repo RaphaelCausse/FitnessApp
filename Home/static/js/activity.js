@@ -93,7 +93,7 @@ const config = {
 			},
 			title: {
 				display: true,
-				text: 'Calories brulées par sport par jour',
+				text: "Temps d'activité par sport par jour",
 				font: {
 					size: 14
 				}
