@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>FAToFIT - Inscription</title>
+{% endblock title %}
+
+{% block style %}
+<link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/login_signup.css' %}" rel="stylesheet" type="text/css">
+{% endblock style %}
+
+{% block script %}
+<script src="{% static 'js/signup_check.js' %}" defer></script>
+<script src="{% static 'js/form_validation.js' %}" defer></script>
+{% endblock script %}
+
+{% block header %}
+{% include 'header2.html' %}
+{% endblock header %}
+
+{% block content %}
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+            <div class="card rounded-3 text-black">
+                <div class="row g-0">
+                    <div class="col-lg-6">
+                        <div class="card-body p-md-5 mx-md-4">
+                            <div class="text-center">
+                                <h4 class="mt-2 mb-5">Rejoins notre équipe !</h4>
+                            </div>
+                            <!-- Formulaire d'inscription -->
+                            <form method="POST" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <!-- Section donnees personnelles -->
+                                <p>Nous avons besoin de te connaître ! Parle nous un peu de toi !</p>
+                                <div id="private-data" class="d-block">
+                                    <!-- Flash messages -->
+                                    <div class="form-outline mb-4">
+                                        {% if messages %}
+                                        <ul class="list-unstyled">
+                                            {% for message in messages %}
+                                            <li class="text-danger">{{ message }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-person fa-3x"></i>
+                                        <label class="form-label" for="lastname">Nom <i class="text-danger">*</i></label>
+                                        <input type="text" id="lastname" name="lastname" class="form-control"
+                                            placeholder="Nom" minlength="2" maxlength="30" required/>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir un nom valide.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-person fa"></i>
+                                        <label class="form-label" for="firstname">Prénom <i class="text-danger">*</i></label>
+                                        <input type="text" id="firstname" name="firstname" class="form-control"
+                                            placeholder="Prénom" minlength="2" maxlength="30" required/>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir un nom valide.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-calendar2-date fa"></i>
+                                        <label class="form-label" for='birthdate'>Date de naissance <i class="text-danger">*</i></label>
+                                        <input type="date" id="birthdate" name="birthdate" class="form-control"
+                                            placeholder="JJ/MM/AAAA" pattern="([0-9]{2})\/([0-9]{2})\/([0-9]{4})" required>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir une date de naissance valide (+ 10 ans).
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-gender-ambiguous fa-3x"></i>
+                                        <label class="form-label" for="gender">Genre <i class="text-danger">*</i></label>
+                                        <select class="form-select" id="gender" name="gender" required>
+                                            <option value="" disabled selected hidden>Genre</option>
+                                            {% for gnd, val in gender.items %}
+                                            <option value="{{ val }}">{{ gnd }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Veuillez selectionner votre genre.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-person fa"></i>
+                                        <label class="form-label">Nom d'utilisateur <i class="text-danger">*</i></label>
+                                        <input type="text" id="username" name="username" class="form-control" placeholder="Nom d'utilisateur"
+                                            minlength="1" maxlength="30" required/>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir un nom d'utilisateur valide.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-envelope-at fa-3x"></i>
+                                        <label class="form-label" for="email">Adresse e-mail <i class="text-danger">*</i></label>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Adresse e-mail" required/>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir une adresse e-mail valide.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-lock fa-3x"></i>
+                                        <label class="form-label" for="password">Mot de passe <i class="text-danger">*</i></label>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required/>
+                                        <div class="invalid-feedback">
+                                            Les mots de passe ne sont pas identiques ou vides.
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-lock fa-3x"></i>
+                                        <label class="form-label" for="confirm_password">Confirmez mot de passe <i class="text-danger">*</i></label>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Mot de passe" required/>
+                                        <div class="invalid-feedback">
+                                            Les mots de passe ne sont pas identiques ou vides.
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-3 mb-4">
+                                        <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                        <label class="form-check-label" for="invalidCheck">
+                                            Acceptez les conditions générales d'utilisation.
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            Veuillez acceptez les conditions générales d'utilisation.
+                                        </div>
+                                    </div>
+                                    <div class="text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-primary btn-block fa-lg hBack mb-3 shadow border" type="button" id="next" style="background-color: white; color: #702CF6; border: none;">
+                                            Suivant<i class="bi bi-arrow-right ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Section donnees corporelles -->
+                                <div id="body-data" class="d-none">
+                                    <div class="form-row d-flex justify-content-evenly mb-4">
+                                        <div class="form-group col-md-6 pe-2">
+                                            <label for="weight">Poids (en kg) <i class="text-danger">*</i></label>
+                                            <input type="number" id="weight" name="weight" class="form-control" step="1" min="0" max="250" required>
+                                            <div class="invalid-feedback">
+                                                Veuillez saisir un poids valide (+ 20 kg).
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6 ps-2">
+                                            <label for="height">Taille (en cm) <i class="text-danger">*</i></label>
+                                            <input type="number" id="height" name="height" class="form-control" step="1" min="0" max="250" required>
+                                            <div class="invalid-feedback">
+                                                Veuillez saisir une taille valide (+ 20 cm).
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-activity fa-3x"></i>
+                                        <label class="form-label" for="lifestyle" required>Indiquez votre niveau d'activité <i class="text-danger">*</i></label>
+                                        {% for lft, val in lifestyles.items %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="lifestyle" value="{{ val }}" required>
+                                            <label class="form-check-label">
+                                                {{ lft }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <i class="bi bi-flag fa-3x"></i>
+                                        <label class="form-label" for="goal" required>Parlez-nous de votre objectif <i class="text-danger">*</i></label>
+                                        {% for goal, val in goals.items %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="goal" value="{{ val }}" required>
+                                            <label class="form-check-label">
+                                                {{ goal }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label class="form-label">Précisez votre objectif de poids <i class="text-danger">*</i></label>
+                                        <input type="number" id="goal_weight" name="goal_weight" class="form-control" step="1" min="0" max="250" required>
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir un objectif de poids valide par rapport à votre objectif.
+                                        </div>
+                                    </div>
+                                    <div class="text-center pt-3 pb-5">
+                                        <button class="btn btn-primary btn-block fa-lg hBack mb-3 me-3 shadow border" type="button" id="prev" style="background-color: white; color: #702CF6; border: none;">
+                                            <i class="bi bi-arrow-left me-2"></i>Retour
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-block fa-lg gradient-custom mb-3 shadow">
+                                            <i class="bi bi-patch-check me-2 text-white"></i>Créez votre compte
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center pb-4">
+                                    <p class="mb-0 me-2">Déja un compte ?</p>
+                                    <a href="{% url 'login' %}">Connectez-vous !</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center gradient-custom">
+                        <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                            <div class="text-center">
+                                <img src="{% static 'img/logo2.png' %}" style="width: 185px;" alt="logo">
+                            </div>
+                            <h4 class="mb-4">Faites du sport mais pas que !</h4>
+                            <!-- <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

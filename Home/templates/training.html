@@ -1,0 +1,618 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}
+<title>FAToFIT - Entrainement</title>
+{% endblock title %}
+
+{% block style %}
+<link href="{% static 'css/header2.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/sidenav.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/progress.css' %}" rel="stylesheet" type="text/css" />
+{% endblock style %}
+
+{% block script %}
+<script src="{% static 'js/training_function.js' %}" defer></script>
+{% endblock script %}
+
+{% block main %}
+<div class="card shadow border-start-primary py-2">
+  <div class="card-body">
+      <h1 class="px-3">Guide d'entrainement</h1>
+      <p class="px-3 m-0">Vous souhaitez faire une séance Push, ou bien Pull, on encore Legs ? Découvrez nos différents guides d'entrainement !</p>
+  </div>
+</div>
+
+<div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+      <div style="display: flex;">
+        <label style="flex: 1;">
+          <button style="width: 100%; height: 100%; border-top-left-radius: 10px;; border-bottom-left-radius: 10px;" class="button1 fs-3" type="button" id="push">Push</button>
+        </label>
+        <label style="flex: 1;">
+          <button style="width: 100%; height: 100%;" class="button1 fs-3" type="button" id="pull">Pull</button>
+        </label>
+        <label style="flex: 1;">
+          <button style="width: 100%; height: 100%; border-top-right-radius: 10px; border-bottom-right-radius: 10px;" class="button1 fs-3" type="button" id="leg">Leg</button>
+        </label>
+      </div>
+           
+    </div>
+</div>
+
+<!-- Push Training -->
+<div id="push-training" class="d-block">
+<div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 1 :</p>
+                    <p style="color: black;">Développer coucher</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Banc</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/bankdruecken_langhantel-1.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">4</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <hr/>
+        </div>
+          
+
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 2 :</p>
+                    <p style="color: black;">Développer coucher incliné</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Banc</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/bankdruecken_langhantel-schraegbank.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">4</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <hr/>
+        </div>
+
+
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 3 :</p>
+                    <p style="color: black;">Butterfly</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/uebungen_fuer_die_brust-butterfly_geraet.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">3</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <hr/>
+        </div>
+
+
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 4 :</p>
+                    <p style="color: black;">Développer avant machine</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/brustuebungen_fitnessstudio-bankdruecken_maschine-breit.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">3</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <hr/>
+        </div>
+
+
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 5 :</p>
+                    <p style="color: black;">Dips</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/untere_brustmuskeln_trainieren-brust_dips_am_geraet.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">4</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <hr/>
+        </div>
+
+
+        <div class="container text-center" style="display: inline-block;">
+            <div class="row">
+              <div class="col" style="margin: auto;">
+                <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+                    <p style="color:#f29700;">Exercice 6 :</p>
+                    <p style="color: black;">Poulie tirage corde verticale</p>
+                    <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+                </div>
+              </div>
+              <div class="col" style="margin: auto;">
+                <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/trizeps_uebungen_fitnessstudio-trizepsdruecken_am_kabelzug.gif" alt="Devolopper coucher">
+              </div>
+              <div class="col" style="margin: auto;">
+                <div class="container text-center">
+                    <div class="row">
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">4</h3>
+                        <p style="border-spacing: 0px;">Series</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">10</h3>
+                        <p style="border-spacing: 0px;">Reps</p>
+                      </div>
+                      <div class="col">
+                        <h3 style="border-spacing: 0px;">90"</h3>
+                        <p style="border-spacing: 0px;">Repos</p>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</div>
+
+<!-- Pull Training -->
+<div id="pull-training" class="d-none">
+  <div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 1 :</p>
+            <p style="color: black;">Tirage verticale poitrine</p>
+            <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/latissimus_uebungen-latzug_breiter_obergriff-1.gif" alt="Tirage verticale poitrine">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+  
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 2 :</p>
+            <p style="color: black;">Tirage horizontal machine</p>
+            <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/uebungen_am_kabelzug-rudern_am_kabelzug.gif" alt="Tirage horizontal machine">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 3 :</p>
+            <p style="color: black;">Tirage Verticale Nuque</p>
+            <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/latissimus_uebungen-latzug_breiter_obergriff-1.gif" alt="Tirage verticale nuque">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">3</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 4 :</p>
+            <p style="color: black;">Curl Biceps Barre</p>
+            <h6 style="color: #a3a3a3;">Equipement : Barre de Curl</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2019/02/bizeps_curls_langhantel-breiter_griff.gif" alt="Curl Biceps Barre">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">8</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 5 :</p>
+            <p style="color: black;">Curl Biceps Haltères</p>
+            <h6 style="color: #a3a3a3;">Equipement : Haltères</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/bizeps_curls_kurzhantel-beidarmig.gif" alt="Culr Biceps Haltère">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Leg Training -->
+<div id="leg-training" class="d-none">
+  <div class="card shadow border-start-primary py-2 mt-3">
+    <div class="card-body">
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 1 :</p>
+            <p style="color: black;">Presse à Cuisses</p>
+            <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-100" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/horizontale_beinpresse_sitzend-500x204.jpg" alt="Presse à Cuisses">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">12</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 2 :</p>
+            <p style="color: black;">Squat à la barre</p>
+            <h6 style="color: #a3a3a3;">Equipement : Barre à squat</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://www.steroidesinfos.com/wp-content/uploads/2019/06/Barbell-Full-Squat.gif" alt="Squat à la barre">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">3</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+  
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 3 :</p>
+            <p style="color: black;">Fentes à la Barre</p>
+            <h6 style="color: #a3a3a3;">Equipement : Barre à Squat</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/langhantel_ausfallschritte_nach_hinten.gif" alt="Fentes Barre">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">12</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 4 :</p>
+            <p style="color: black;">Soulevé de Terre</p>
+            <h6 style="color: #a3a3a3;">Equipement : Machine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-50" src="https://urbanfitness.fr/member/wp-content/uploads/2018/11/langhantel_uebungen_frauen-langhantel_kreuzheben.gif" alt="Soulevé de Terre">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">10</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+
+
+  <div class="container text-center" style="display: inline-block;">
+    <div class="row">
+      <div class="col" style="margin: auto;">
+        <div class="text-uppercase text-primary fw-bold text-xs" style="text-align: left;">
+            <p style="color:#f29700;">Exercice 5 :</p>
+            <p style="color: black;">Extension Debout Machine</p>
+            <h6 style="color: #a3a3a3;">Equipement : Mahine</h6>
+        </div>
+      </div>
+      <div class="col" style="margin: auto;">
+        <img class="w-75" src="https://urbanfitness.fr/member/wp-content/uploads/2018/12/wadenheben_maschine-wadenmuskulatur_aufbauen-411x292.jpg" alt="Curl Biceps Barre">
+      </div>
+      <div class="col" style="margin: auto;">
+        <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <h3 style="border-spacing: 0px;">4</h3>
+                <p style="border-spacing: 0px;">Series</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">15</h3>
+                <p style="border-spacing: 0px;">Reps</p>
+              </div>
+              <div class="col">
+                <h3 style="border-spacing: 0px;">90"</h3>
+                <p style="border-spacing: 0px;">Repos</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock main %}

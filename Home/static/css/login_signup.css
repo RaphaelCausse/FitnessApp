@@ -1,0 +1,9 @@
+i {
+    color: #702CF6;
+}
+.gradient-custom {
+    border: none;
+    background: #8913ff;
+    background: -webkit-linear-gradient(to left, rgba(137,19,255,1), rgba(198,40,186,1));
+    background: linear-gradient(to left, rgba(137,19,255,1), rgba(198,40,186,1))
+}
