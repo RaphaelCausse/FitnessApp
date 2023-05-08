@@ -1,26 +1,27 @@
+// Affichage icon correspondant au sport choisi
 img = document.getElementById("img_sport");
 function changeIcon(selectValue) {
 	img.className = "";
 	switch(selectValue){
-		case "yoga":
+		case "Yoga":
 			img.className = "bi bi-yin-yang";
 			break;
-		case "natation":
+		case "Swimming":
 			img.className = "bi bi-tsunami";
 			break;
-		case "course":
+		case "Running":
 			img.className = "bi bi-lungs-fill";
 			break;
-		case "cyclisme":
+		case "Cycling":
 			img.className = "bi bi-bicycle";
 			break;
-		case "musculation":
+		case "Lift Weight":
 			img.className = "bi bi-universal-access";
 			break;
-		case "cardio":
+		case "High-intensity interval training":
 			img.className = "bi bi-lightning-charge-fill";
 			break;
-		case "ski":
+		case "Cross Country Skiing":
 			img.className = "bi bi-snow";
 			break;
 	}
@@ -31,8 +32,6 @@ let selectSport = document.getElementById("selectSport");
 selectSport.addEventListener('change', function(e) {
 	let selectValue = selectSport.value;
 	changeIcon(selectValue);
-	console.log(selectValue);
-	console.log(img.className.value);
 })
 
 function slideDuree() {
@@ -55,7 +54,7 @@ addButton.addEventListener("click", function() {
   }
 });
 
-
+//Suppression de la div d'ajout
 var cancel = document.getElementById('cancel');
 cancel.addEventListener("click", (e) =>{
     document.getElementById("div_select").style.display="none";
@@ -65,6 +64,7 @@ cancel.addEventListener("click", (e) =>{
 let context = document.getElementById("context-data").innerText;
 context = JSON.parse(context);
 
+//Creation du graphique des sports quotidiens
 const myChart = document.getElementById("my_chart");
 
 const abscisse_day = context["dates"].length
@@ -107,7 +107,7 @@ const nex_chart = new Chart(
     config
 );
 
-
+//Sauvegarde du sport
 save = document.getElementById("save")
 
 save.addEventListener("click", (e) => {
@@ -134,6 +134,7 @@ save.addEventListener("click", (e) => {
     })
 });
 
+//Mise a jour du graphique avec la nouvelle activites indiquee
 function update_chartjs_data(data) {
 	return {
 		"labels": data["dates"],
