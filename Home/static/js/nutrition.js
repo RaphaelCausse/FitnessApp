@@ -1,5 +1,6 @@
 $('#product-select').hide();
 
+//Recherche du plat ou de l'ingredient dans la barre de recherche
 $(document).ready(() => {
     $("#spinner").hide();
     const search_bar = $('#search_bar');
@@ -63,8 +64,7 @@ $(document).ready(() => {
 
 });
 
-
-
+//Recherche d'un produit n'existant pas encore dans la base de donnees
 function search_product (which = "current") {
     let formData = new FormData();
     formData.append('product', $('#search_bar').val());
@@ -97,7 +97,7 @@ function search_product (which = "current") {
     });
 }
 
-
+//Ajout d'un produit dans la base de donnees
 function add_product() {
     let formData = new FormData();
     let product_name = $('#product-name').val().toLowerCase()
@@ -140,14 +140,14 @@ addButton.addEventListener("click", function() {
   }
 });
 
-//Affichage de la div d'ajout
+//Suppression de la div d'ajout
 var add = document.getElementById('cancel');
 add.addEventListener("click", (e) =>{
     document.getElementById("div_select").style.display="none";
     divSelect.style.display = "none"
 });
 
-//Affichage de la div d'ajout
+//Sauvegarde du plat ou de l'ingredient consomme
 var add = document.getElementById('save');
 add.addEventListener("click", (e) => {
     let formData = new FormData();
@@ -155,7 +155,6 @@ add.addEventListener("click", (e) => {
     formData.append("category", $("#selected-product-category").val());
     formData.append("name", $('#search_bar').val());
     formData.append("quantity", $('#selected-product-quantity').val());
-    // console.log(formData)
     $.ajax({
         url: "add_product_to_user",
         type: 'POST',

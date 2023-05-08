@@ -1,7 +1,7 @@
 
 const ctx = document.getElementById('ptichart');
 
-// TODO Recup les calories sur les 15 derniers jours, depuis Activity et Food, avec requete ajax
+//Recup les calories sur les 15 derniers jours, depuis Activity et Food, avec requete ajax
 
 let chart = new Chart(ctx, {
   type: 'bar',
